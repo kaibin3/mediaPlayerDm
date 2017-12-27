@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/RelativeLayout_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:uiOptions="splitActionBarWhenNarrow"
+    tools:context=".LocalMediasActivity" >
+
+    <ListView
+        android:id="@+id/lv_media"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/LinearLayout_button"
+        android:visibility="visible"
+        >
+    </ListView>
+
+    <Button
+        android:id="@+id/bt_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:onClick="ClickMe"
+        android:text="@string/_back"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_path"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bt_back"
+        android:text="@string/_currentPath"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/lv_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_path"
+        android:layout_above="@+id/LinearLayout_button"
+        android:visibility="gone" >
+    </ListView>
+
+    <LinearLayout
+        android:id="@id/LinearLayout_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_media"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="ClickMe"
+            android:text="@string/_playList" />
+
+        <Button
+            android:id="@+id/btn_file"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="ClickMe"
+            android:text="@string/_fileList" />
+    </LinearLayout>
+
+</RelativeLayout>
