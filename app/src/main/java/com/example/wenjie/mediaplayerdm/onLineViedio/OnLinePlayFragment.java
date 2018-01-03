@@ -3,8 +3,10 @@ package com.example.wenjie.mediaplayerdm.onLineViedio;
 import android.app.Fragment;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -12,6 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.wenjie.mediaplayerdm.R;
+import com.example.wenjie.mediaplayerdm.util.Constants;
+
+import java.io.IOException;
 
 /**
  * Created by wen.jie on 2018/1/2.
@@ -52,15 +57,7 @@ public class OnLinePlayFragment extends Fragment {
         mHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-                mMediaPlayer.setDisplay(holder);
-            ;
-                mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-
-                    }
-                });
+                configSurfaceCreated(holder);
             }
 
             @Override
@@ -73,7 +70,33 @@ public class OnLinePlayFragment extends Fragment {
 
             }
         });
-      //  mMediaPlayer = new MediaPlayer();
+
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+
+            }
+        });
+
+    }
+
+    private void configSurfaceCreated(SurfaceHolder holder) {
+        mMediaPlayer.setDisplay(holder);
+
+        //网络视频
+        String videoUrl2 = Constants.phiVideoUrl;
+
+        Uri uri = Uri.parse(videoUrl2);
+
+        try {
+            mMediaPlayer.setDataSource(uri.toString());
+            mMediaPlayer.prepare();
+            mMediaPlayer.start();
+        } catch (IOException e) {
+            Log.d(TAG, "configSurfaceCreated: ");
+            e.printStackTrace();
+        }
 
     }
 }
