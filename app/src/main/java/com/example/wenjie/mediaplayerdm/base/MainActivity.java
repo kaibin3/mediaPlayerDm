@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.wenjie.mediaplayerdm.LocalMediasActivity;
 import com.example.wenjie.mediaplayerdm.R;
+import com.example.wenjie.mediaplayerdm.onLineViedio.OnLinePlayActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         allActivityLayout.removeAllViews();
 
         showActivity.add(new ActivityName(this, LocalMediasActivity.class, "本地视频列表"));
-       // showActivity.add(new ActivityName(this, Mp4Activity.class, "Mp4"));
+        // showActivity.add(new ActivityName(this, Mp4Activity.class, "Mp4"));
+        showActivity.add(new ActivityName(this, OnLinePlayActivity.class, "在线视频 Mp4"));
 
 
         for (int i = 0; i < showActivity.size(); i++) {

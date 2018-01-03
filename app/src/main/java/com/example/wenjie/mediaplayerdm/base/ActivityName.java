@@ -7,7 +7,7 @@ import android.content.Context;
  */
 
 public class ActivityName {
-
+//
     private Context context;
     private Class targetActivity;
     private String activityDescribe;
