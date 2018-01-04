@@ -6,8 +6,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 
 public class DBHelp extends SQLiteOpenHelper {
-    private static final String NAME = "media.db";
-    private static final int VERSON = 1;
 
 
     /**
@@ -16,7 +14,7 @@ public class DBHelp extends SQLiteOpenHelper {
      * @param context
      */
     public DBHelp(Context context) {
-        super(context, NAME, null, VERSON);
+        super(context, DatabaseDef.NAME, null, DatabaseDef.VERSION);
     }
 
 

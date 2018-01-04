@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="history_background">#F7F7F7</color>
+    <color name="titlebar">#18cbfd</color>
+    <color name="delete_back">#ff6d6d</color>
+    <color name="bottom_tab_text_nor">#d4d4d4</color>
+    <color name="bottom_tab_text_pre">#18cbfd</color>
+    <color name="default_divider">#f8f8f8</color>
+    <color name="default_item_background">#f9f9f9</color>
+    <color name="default_item_hint_color">#999999</color>
+    <color name="default_text_color">#333333</color>
+
+    <!--<color name="colorPrimary">#818080</color>-->
+    <color name="colorPrimary">#18cbfd</color>
+    <color name="colorPrimaryDark">#18cbfd</color>
+    <color name="colorAccent">#18cbfd</color>
+    <color name="person_info_height_weight_text">#22d9f1</color>
+
+    <color name="gradual_start_color">#18cbfd</color>
+    <color name="gradual_end_color">#2feae5</color>
+
+    <color name="me_menu_divider">#e3e3e3</color>
+    <color name="me_background">#f8f8f8</color>
+    <color name="me_nav_text_color">#333333</color>
+    <color name="me_account_tip_color">#686868</color>
+    <color name="person_info_divider_color">#eeeeee</color>
+    <color name="person_info_hint_color">#cccccc</color>
+    <color name="location_background">#f8f8f8</color>
+    <color name="location_label">#999999</color>
+    <color name="location_text">#333</color>
+    <color name="white">#FFF</color>
+    <color name="semi_white">#80ffffff</color>
+    <color name="red">#F00</color>
+    <color name="black">#000</color>
+    <color name="gray">#bababa</color>
+    <color name="transparent">#00000000</color>
+    <color name="register_forget_password">#666666</color>
+
+    <color name="hint_color">#999999</color>
+    <color name="back_color">#999999</color>
+    <color name="text_color">#666666</color>
+    <color name="text_color_pressed">#f39800</color>
+    <color name="register_line_color">#e0e0e0</color>
+    <color name="register_other_line">#afabbd</color>
+    <color name="tips_color">#999</color>
+    <color name="me_text_gray">#666</color>
+    <color name="my_member_name">#333333</color>
+    <color name="my_member_remove">#999999</color>
+    <color name="member_info_text_color">#333333</color>
+    <color name="divider_my_member">#eeeeee</color>
+    <color name="my_member_add">#999999</color>
+    <color name="dialog_background_origin">#f5ad47</color>
+    <color name="my_target_text_color">#666666</color>
+    <color name="my_target_tip_color">#999999</color>
+    <color name="my_target_tip_text_color">#333333</color>
+    <color name="body_data_item_background">#f8f8f8</color>
+
+    <color name="update_item_text_color">#666666</color>
+    <color name="about_item_text_color">#666666</color>
+
+    <color name="province_line_border">#C7C7C7</color>
+
+    <color name="syn_text_color">#686868</color>
+    <color name="tab_blue">#18cbfd</color>
+
+    <color name="device_text">#2a2a2a</color>
+    <color name="device_unbind">#f86969</color>
+
+    <color name="progress_background">#fd9c06</color>
+
+
+    <!-- device -->
+    <color name="btn_device_bind_text">#2be4e9</color>
+
+    <color name="music_search_imageview_color">#686868</color>
+
+    <!-- datadetails -->
+    <color name="datadetails_view_line_color">#f8f8f8</color>
+
+    <color name="balance_text_color">#605b76</color>
+
+    <color name="phi_orange">#f5ad47</color>
+
+    <color name="menu_title_background">#f8f8f8</color>
+    <color name="menu_title_text_color">#686868</color>
+
+
+    <!-- advice feedback -->
+    <color name="text_hint">#a4a4a5</color>
+    <color name="submit_btn_text_color">#fefefe</color>
+
+    <!-- health card -->
+    <color name="weight_line_color">#18cbfd</color>
+    <color name="fat_line_color">#30ebe4</color>
+    <color name="bmi_line_color">#f95780</color>
+    <color name="health_details_text_color">#2a2a2a</color>
+    <color name="health_weight_sign_text_color">#616178</color>
+    <color name="health_border_background">#f8f8f8</color>
+    <color name="health_dividing_line_background">#FFFFFF</color>
+    <color name="chart_bottom_text_color">#999999</color>
+    <color name="chart_weight_fill_color">#f5ad47</color>
+    <color name="chart_x_axis_line_color">#e3e3e3</color>
+    <color name="health_progress_text_color">#59f479</color>
+    <color name="translucent">#66000000</color>
+    <color name="member_selected_color">#333333</color>
+    <color name="member_unselected_color">#999999</color>
+
+    <!-- wfc -->
+    <color name="wfc_cho_first_title">#333333</color>
+    <color name="wfc_cho_second_title">#999999</color>
+    <color name="wfc_rem_cancle_bt">#f4f4f4</color>
+    <color name="wfc_pro_bt_tx">#2ae3ea</color>
+    <color name="wfc_text_blue">#20d7f3</color>
+    
+    <color name="kcode_call">#fdff65</color>
+    <color name="kcode_activate_button">#24d5f0</color>
+    <color name="kcode_activate_yellow">#feb942</color>
+
+    <!--data trends-->
+    <color name="chart_x_axis_text">#999999</color>
+
+    <color name="advice_text_color">#333333</color>
+    <color name="article_title_text_color">#333333</color>
+    <color name="transparent_gray">#66000000</color>
+
+    <color name="view_background_white">#80ffffff</color>
+
+    <color name="bp_blood_pressure_date">#adadad</color>
+    <color name="bp_blood_pressure_iv_bg">#f0f0f0</color>
+    <color name="skip_bg_color">#66686868</color>
+
+    <color name="datatrend_gap">#f6c660</color>
+    <color name="avatar_dialog_background">#f8f8f8</color>
+
+    <color name="divider_color">#f8f8f8</color>
+
+    <color name="share_bg_translucent">#00101010</color>
+
+    <color name="blood_pressure_title_bg_only">#FF29DBD3</color>
+
+    <color name="blood_pressure_text_color">#333333</color>
+
+    <color name="selector_button_color">#eef4f6</color>
+
+    <color name="advice_feedback_submit_btn_bg_color">#2ae6e7</color>
+
+    <color name="guide_tip_background_color">#AF000000</color>
+
+    <color name="update_dialog_color">#47e3e8</color>
+
+    <color name="update_dialog_title_color">#10bde8</color>
+
+    <color name="unread_message_color_red">#f64444</color>
+
+    <color name="find_list_divider">#b6b6b6</color>
+
+</resources>

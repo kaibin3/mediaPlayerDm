@@ -12,4 +12,6 @@ public class Constants {
 
 
     public static String phiVideoUrl = "http://static1.gotokeep.com/course/public/elementary_unarmed_chest_male.mp4";
+
+
 }

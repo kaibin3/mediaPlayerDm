@@ -29,7 +29,7 @@ public class OnLinePlayFragment extends Fragment {
 
 
     private MediaPlayer mMediaPlayer;
-    private SurfaceHolder mHolder;
+    private SurfaceHolder mSurfaceHolder;
     private AudioManager mAudioManager;
 
 
@@ -53,11 +53,11 @@ public class OnLinePlayFragment extends Fragment {
 
     private void initPlayer() {
         mMediaPlayer = new MediaPlayer();
-        mHolder = mSurfaceView.getHolder();
-        mHolder.addCallback(new SurfaceHolder.Callback() {
+        mSurfaceHolder = mSurfaceView.getHolder();
+        mSurfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-                configSurfaceCreated(holder);
+                onSurfaceCreated(holder);
             }
 
             @Override
@@ -81,7 +81,7 @@ public class OnLinePlayFragment extends Fragment {
 
     }
 
-    private void configSurfaceCreated(SurfaceHolder holder) {
+    private void onSurfaceCreated(SurfaceHolder holder) {
         mMediaPlayer.setDisplay(holder);
 
         //网络视频
@@ -94,7 +94,7 @@ public class OnLinePlayFragment extends Fragment {
             mMediaPlayer.prepare();
             mMediaPlayer.start();
         } catch (IOException e) {
-            Log.d(TAG, "configSurfaceCreated: ");
+            Log.d(TAG, "configSurfaceCreated: "+e);
             e.printStackTrace();
         }
 

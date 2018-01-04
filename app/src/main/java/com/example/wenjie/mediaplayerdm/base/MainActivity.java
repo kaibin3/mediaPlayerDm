@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.wenjie.mediaplayerdm.LocalMediasActivity;
+import com.example.wenjie.mediaplayerdm.PhiFind.FindVideoActivity;
 import com.example.wenjie.mediaplayerdm.R;
 import com.example.wenjie.mediaplayerdm.onLineViedio.OnLinePlayActivity;
 
@@ -32,11 +33,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         allActivityLayout = (LinearLayout) findViewById(R.id.activity_main);
         allActivityLayout.setOrientation(LinearLayout.VERTICAL);
-        allActivityLayout.removeAllViews();
+      //  allActivityLayout.removeAllViews();
 
         showActivity.add(new ActivityName(this, LocalMediasActivity.class, "本地视频列表"));
         // showActivity.add(new ActivityName(this, Mp4Activity.class, "Mp4"));
         showActivity.add(new ActivityName(this, OnLinePlayActivity.class, "在线视频 Mp4"));
+        showActivity.add(new ActivityName(this, FindVideoActivity.class, "phicomm Mp4"));
 
 
         for (int i = 0; i < showActivity.size(); i++) {
