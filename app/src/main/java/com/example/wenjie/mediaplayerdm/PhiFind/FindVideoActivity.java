@@ -56,8 +56,8 @@ public class FindVideoActivity extends Activity implements FindVideoContract.Vie
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FindCardInfo cardInfo = mAdapter.getItem(position);
                 videoPlayView.stopPlay();
-                videoPlayView.setPhotoUrl(cardInfo.getPhotoUrl());
-                videoPlayView.setVideoUrl(cardInfo.getVideoUrl());
+                videoPlayView.setPhotoUri(cardInfo.getPhotoUrl());
+                videoPlayView.setVideoUri(cardInfo.getVideoUrl());
             }
         });
     }

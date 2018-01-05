@@ -25,8 +25,8 @@ public class FindVideoPresenter implements FindVideoContract.Presenter {
         FindVideoEntry entry = new FindVideoEntry();
 
         VideoPlayView.VideoPlayInfo mediaInfo = new VideoPlayView.VideoPlayInfo();
-        mediaInfo.setPhotoUrl(Constants.baiduPhotoUrl);
-        mediaInfo.setVideoUrl(Constants.phiVideoUrl);
+        mediaInfo.setPhotoUri(Constants.baiduPhotoUrl);
+        mediaInfo.setVideoUri(Constants.phiVideoUrl);
         entry.setMediaInfo(mediaInfo);
 
         List<FindCardInfo> findCardInfos = new ArrayList<>();

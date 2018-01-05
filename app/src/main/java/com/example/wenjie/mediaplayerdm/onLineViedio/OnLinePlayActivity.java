@@ -18,8 +18,8 @@ public class OnLinePlayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_line_play);
 
-        addFragment(onLinePlayFragment);
-        //addFragment(videoFragment);
+       // addFragment(onLinePlayFragment);
+        addFragment(new VideoFragment());
     }
 
     private void addFragment(Fragment fragment) {

@@ -23,7 +23,13 @@
         android:alpha="0.6"
         android:src="@drawable/icon_play" />
 
-    <include layout="@layout/video_play_contorl_layout" />
+
+    <com.example.wenjie.mediaplayerdm.PhiFind.VideoPlayControlView
+        android:id="@+id/play_control_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!--    <include layout="@layout/video_play_control_layout" />-->
 
     <!--    <View
             android:layout_width="match_parent"

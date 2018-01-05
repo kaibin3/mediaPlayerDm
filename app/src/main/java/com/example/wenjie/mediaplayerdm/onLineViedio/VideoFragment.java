@@ -33,6 +33,7 @@ public class VideoFragment extends Fragment {
     }
 
 
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
