@@ -8,6 +8,8 @@
     android:orientation="vertical"
     tools:context="com.example.wenjie.mediaplayerdm.PhiFind.FindVideoActivity">
 
+    <include layout="@layout/title_bar" />
+
     <com.example.wenjie.mediaplayerdm.PhiFind.VideoPlayView
         android:id="@+id/video_play_view"
         android:layout_width="match_parent"
