@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.wenjie.mediaplayerdm.R;
-import com.example.wenjie.mediaplayerdm.util.Constants;
 
 import java.io.IOException;
 
@@ -23,7 +22,7 @@ import java.io.IOException;
 
 public class VideoPlayView extends RelativeLayout implements View.OnClickListener {
     private static final String TAG = "VideoPlayView";
-    private MediaInfo mediaInfo;
+    private VideoPlayInfo mediaInfo;
     private String videoUrl;
     private String PhotoUrl;
 
@@ -89,13 +88,11 @@ public class VideoPlayView extends RelativeLayout implements View.OnClickListene
         Log.d(TAG, "onSurfaceCreated: ");
         mMediaPlayer.setDisplay(holder);
         //网络视频
-        String videoUrl2 = Constants.phiVideoUrl;
+        String videoUrl2 = videoUrl;
         Uri uri = Uri.parse(videoUrl2);
 
         try {
             mMediaPlayer.setDataSource(uri.toString());
-            mMediaPlayer.prepare();
-
         } catch (IOException e) {
             Log.e(TAG, "onSurfaceCreated: " + e);
             e.printStackTrace();
@@ -106,18 +103,21 @@ public class VideoPlayView extends RelativeLayout implements View.OnClickListene
     private void startPlay() {
         mPhotoImg.setVisibility(View.INVISIBLE);
         mPlayImg.setVisibility(View.INVISIBLE);
-        mMediaPlayer.start();
+        try {
+            mMediaPlayer.prepare();
+            mMediaPlayer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
-    private void stopPlay() {
+    public void stopPlay() {
         mMediaPlayer.stop();
     }
 
 
-    public void setMediaInfo(MediaInfo mediaInfo) {
-        this.mediaInfo = mediaInfo;
-    }
+
 
     @Override
     public void onClick(View v) {
@@ -126,6 +126,12 @@ public class VideoPlayView extends RelativeLayout implements View.OnClickListene
                 startPlay();
                 break;
         }
+    }
+
+    public void setMediaInfo(VideoPlayInfo mediaInfo) {
+        this.mediaInfo = mediaInfo;
+        setPhotoUrl(mediaInfo.getPhotoUrl());
+        setVideoUrl(mediaInfo.getVideoUrl());
     }
 
     public void setVideoUrl(String videoUrl) {
@@ -143,9 +149,28 @@ public class VideoPlayView extends RelativeLayout implements View.OnClickListene
         Glide.with(getContext()).load(PhotoUrl).into(mPhotoImg);
     }
 
-    public class MediaInfo {
-        String videoUrl;
-        String PhotoUrl;
+    public static class VideoPlayInfo {
+        public VideoPlayInfo() {
+        }
+
+        String photoUrl;
+        String VideoUrl;
+
+        public String getPhotoUrl() {
+            return photoUrl;
+        }
+
+        public void setPhotoUrl(String photoUrl) {
+            this.photoUrl = photoUrl;
+        }
+
+        public String getVideoUrl() {
+            return VideoUrl;
+        }
+
+        public void setVideoUrl(String videoUrl) {
+            VideoUrl = videoUrl;
+        }
     }
 
 }

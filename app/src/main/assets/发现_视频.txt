@@ -1,0 +1,71 @@
+{
+    data=ContentContainer{
+        essayList=[
+            ArticleItem{
+                coverUrl='https: //api.tookok.cn/v2/article/1442547558563/cover.jpeg',
+                summary='健康贴士',
+                sequence=1,
+                title='怎么喝水才能保证肌体有充分的水分',
+                id=28
+            },
+            ArticleItem{
+                coverUrl='https: //image.tookok.cn/article/9N3z4KTdZ56hrjMXoW/cover.jpg',
+                summary='运动',
+                sequence=2,
+                title='讲个笑话，你运动后成功减重了~',
+                id=8
+            },
+            ArticleItem{
+                coverUrl='https: //api.tookok.cn/v2/article/1442888772714/cover.jpeg',
+                summary='健康贴士',
+                sequence=3,
+                title='体重增加的五大隐秘因素',
+                id=33
+            },
+            ArticleItem{
+                coverUrl='https: //api.tookok.cn/v2/article/1443428718788/cover.jpeg',
+                summary='健康贴士',
+                sequence=4,
+                title='成年人长不胖的原因',
+                id=37
+            },
+            ArticleItem{
+                coverUrl='https: //api.tookok.cn/v2/article/1443431721082/cover.jpeg',
+                summary='健康贴士',
+                sequence=5,
+                title='七个方法提高基础代谢率',
+                id=38
+            }
+        ],
+        keepVideoList=[
+            KeepItem{
+                videoDescription='徒手胸肌初级训练',
+                coveyImage='https: //ihome.phicomm.com: 2580/hermes/file/group1/M00/0B/E5/wKgoJlmmeHaEcIS1AAAAAAAAAAA829.png',
+                videoUrl='http: //static1.gotokeep.com/course/public/elementary_unarmed_chest_male.mp4'
+            },
+            KeepItem{
+                videoDescription='翘臀养成',
+                coveyImage='https: //ihome.phicomm.com: 2580/hermes/file/group1/M00/0B/E5/wKgoJlmmdfaEMywFAAAAAAAAAAA656.png',
+                videoUrl='http: //static1.gotokeep.com/course/public/buttocks_cultivating.mp4'
+            },
+            KeepItem{
+                videoDescription='人鱼线雕刻',
+                coveyImage='https: //ihome.phicomm.com: 2580/hermes/file/group1/M00/0B/E5/wKgoJlmmdgWECb8AAAAAAAAAAAA080.png',
+                videoUrl='http: //static1.gotokeep.com/course/public/v_shaped_abs_male.mp4'
+            },
+            KeepItem{
+                videoDescription='核心功能入门',
+                coveyImage='https: //ihome.phicomm.com: 2580/hermes/file/group1/M00/0B/E5/wKgoJlmmdhyELUWRAAAAAAAAAAA104.png',
+                videoUrl='http: //static1.gotokeep.com/course/public/elementary_core_male.mp4'
+            }
+        ],
+        activityList=[
+            RecentPromotion{
+                activityId='2017_health_report',
+                coverImageUrl='https: //ihome.phicomm.com: 2580/hermes/image/group1/M00/25/7F/wKgoJlo8aNSEGZnIAAAAAAAAAAA576.jpg'
+            }
+        ]
+    },
+    status=0,
+    description='null'
+}

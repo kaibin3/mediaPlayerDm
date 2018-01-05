@@ -1,5 +1,7 @@
 package com.example.wenjie.mediaplayerdm.PhiFind.entry;
 
+import com.example.wenjie.mediaplayerdm.PhiFind.VideoPlayView;
+
 import java.util.List;
 
 /**
@@ -10,8 +12,8 @@ public class FindVideoEntry {
 
     private String photoUrl;
     private String VideoUrl;
-    private List<FindCardInfo> findCardInfos;
-
+    private List<FindCardInfo> recommendInfo;
+    private VideoPlayView.VideoPlayInfo mediaInfo;
 
     public String getPhotoUrl() {
         return photoUrl;
@@ -29,12 +31,20 @@ public class FindVideoEntry {
         VideoUrl = videoUrl;
     }
 
-    public List<FindCardInfo> getFindCardInfos() {
-        return findCardInfos;
+    public List<FindCardInfo> getRecommendInfo() {
+        return recommendInfo;
     }
 
-    public void setFindCardInfos(List<FindCardInfo> findCardInfos) {
-        this.findCardInfos = findCardInfos;
+    public void setRecommendInfo(List<FindCardInfo> findCardInfos) {
+        this.recommendInfo = findCardInfos;
+    }
+
+    public VideoPlayView.VideoPlayInfo getMediaInfo() {
+        return mediaInfo;
+    }
+
+    public void setMediaInfo(VideoPlayView.VideoPlayInfo mediaInfo) {
+        this.mediaInfo = mediaInfo;
     }
 
     @Override
@@ -42,7 +52,8 @@ public class FindVideoEntry {
         return "FindVideoEntry{" +
                 "photoUrl='" + photoUrl + '\'' +
                 ", VideoUrl='" + VideoUrl + '\'' +
-                ", findCardInfos=" + findCardInfos +
+                ", recommendInfo=" + recommendInfo +
+                ", mediaInfo=" + mediaInfo +
                 '}';
     }
 }

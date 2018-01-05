@@ -45,7 +45,7 @@ public class RecommendAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public FindCardInfo getItem(int position) {
         return mCards.get(position);
     }
 

@@ -5,6 +5,7 @@ public class FindCardInfo {
 
     private TYPE type;
     private String photoUrl;
+    private String videoUrl;
     private String description;
     private String label;
 
@@ -47,6 +48,13 @@ public class FindCardInfo {
         this.label = label;
     }
 
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
 
     @Override
     public String toString() {
