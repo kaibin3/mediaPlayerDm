@@ -17,13 +17,16 @@ import com.example.wenjie.mediaplayerdm.R;
  * Created by wen.jie on 2018/1/5.
  */
 
-public class VideoPlayControlView extends RelativeLayout {
+public class VideoPlayControlView extends RelativeLayout implements View.OnClickListener {
     private static final String TAG = "VideoPlayControlView";
     private TextView mCurrentTimeView;
     private TextView duration_view;
     private SeekBar seek_bar;
+    private TextView play_btn;
 
     private VideoPlayView videoPlayView;
+
+    private MediaPlayer mediaPlayer;
     private int mDuration;
 
     public VideoPlayControlView(Context context) {
@@ -40,6 +43,8 @@ public class VideoPlayControlView extends RelativeLayout {
         View.inflate(getContext(), R.layout.video_play_control_layout, this);
         mCurrentTimeView = findViewById(R.id.progress_view);
         duration_view = findViewById(R.id.duration_view);
+        play_btn = findViewById(R.id.play_btn);
+        play_btn.setOnClickListener(this);
         seek_bar = findViewById(R.id.seek_bar);
         seek_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -51,12 +56,14 @@ public class VideoPlayControlView extends RelativeLayout {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                if (null != videoPlayView) videoPlayView.removeMgsShowProgress();
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int progress = seekBar.getProgress();
-                if (null != videoPlayView) videoPlayView.seekTo(progress);
+                mControlViewCallBack.seekTo(progress);
+                if (null != videoPlayView) videoPlayView.showProgress();
             }
         });
     }
@@ -66,12 +73,14 @@ public class VideoPlayControlView extends RelativeLayout {
     }
 
 
-    public void setMediaInfo(MediaPlayer mediaInfo) {
-        mDuration = mediaInfo.getDuration();//1045120
+    public void setMediaPlayer(MediaPlayer mediaPlayer) {
+        this.mediaPlayer = mediaPlayer;
+        mDuration = mediaPlayer.getDuration();//1045120
         Log.d(TAG, "setMediaInfo: ");
         duration_view.setText(VideoPlayHelper.formatDuration(mDuration));
         seek_bar.setMax(mDuration);
         seek_bar.setProgress(0);
+        play_btn.setText("暂停");
     }
 
 
@@ -110,6 +119,47 @@ public class VideoPlayControlView extends RelativeLayout {
         //objectAnimator.start();
 
         setVisibility(View.VISIBLE);
+    }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.play_btn:
+                if (play_btn.getText().toString().equals("暂停")) {
+                    setPause();
+                } else {
+                    setPlay();
+                }
+                break;
+        }
+    }
+
+    private void setPause() {
+        play_btn.setText("播放");
+        mControlViewCallBack.pause();
+    }
+
+    private void setPlay() {
+        setPlay(true);
+    }
+
+    public void setPlay(boolean callBack) {
+        play_btn.setText("暂停");
+        if (callBack) {
+            mControlViewCallBack.start();
+        }
+    }
+
+
+    private ControlViewCallBack mControlViewCallBack;
+
+    public interface ControlViewCallBack {
+        void start();
+        void pause();
+        void seekTo(int pos);
+    }
+
+    public void setControlViewCallBack(ControlViewCallBack controlViewCallBack) {
+        mControlViewCallBack = controlViewCallBack;
     }
 }

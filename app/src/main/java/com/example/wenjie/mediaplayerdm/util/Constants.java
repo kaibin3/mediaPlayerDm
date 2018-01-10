@@ -9,7 +9,9 @@ public class Constants {
     public static String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
 
     public static String localVideoUrl = "/storage/emulated/0/ddmsrec.mp4";
-    public static String localVideoUrl2 = "/storage/emulated/0/elementary_unarmed_chest_male.mp4";
+    public static String localVideoUrl3 = "/storage/emulated/0/login_sample.mp4";
+    public static String localVideoUrl2 = "/storage/emulated/0/yuancheng_gongju.mp4";
+    public static String localVideoUrlFind1 = "/storage/emulated/0/elementary_unarmed_chest_male.mp4";
 
     public static String phiVideoUrl = "http://static1.gotokeep.com/course/public/elementary_unarmed_chest_male.mp4";//徒手胸肌初级训练
     public static String phiVideoUrl2 = "http://static1.gotokeep.com/course/public/buttocks_cultivating.mp4";//翘臀养成

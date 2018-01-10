@@ -13,6 +13,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.wenjie.mediaplayerdm.R;
@@ -24,7 +25,8 @@ import java.lang.ref.WeakReference;
  * Created by wen.jie on 2018/1/3.
  */
 
-public class VideoPlayView extends RelativeLayout implements View.OnClickListener {
+public class VideoPlayView extends RelativeLayout implements View.OnClickListener
+        , VideoPlayControlView.ControlViewCallBack, View.OnTouchListener {
     private static final String TAG = "VideoPlayView";
     private static final int MSG_SHOW_PROGRESS = 121;
     private static final int MSG_DISMISS_CONTROL = 122;
@@ -45,6 +47,7 @@ public class VideoPlayView extends RelativeLayout implements View.OnClickListene
 
     private boolean mSetDataSource;
     private boolean mStartPlay;
+    private int progressTo;
 
 
     public static class MyHandler extends Handler {
@@ -67,10 +70,17 @@ public class VideoPlayView extends RelativeLayout implements View.OnClickListene
         }
     }
 
-    private void showProgress() {
+
+    public void showProgress(int progress) {
+        mPlayControlView.setProgress(progress);
+        mHandler.sendEmptyMessageDelayed(MSG_SHOW_PROGRESS, TIME_INTERVAL);
+    }
+
+    public void showProgress() {
         int currentPosition = mMediaPlayer.getCurrentPosition();
         Log.d(TAG, "handleMessage: currentPosition " + currentPosition);
         mPlayControlView.setProgress(currentPosition);
+        mHandler.removeMessages(MSG_SHOW_PROGRESS);
         mHandler.sendEmptyMessageDelayed(MSG_SHOW_PROGRESS, TIME_INTERVAL);
     }
 
@@ -91,7 +101,7 @@ public class VideoPlayView extends RelativeLayout implements View.OnClickListene
         mPlayImg = findViewById(R.id.play_img);
         mPlayImg.setOnClickListener(this);
         mSurfaceView = findViewById(R.id.surface_view);
-        mSurfaceView.setOnTouchListener(onTouchListener);
+        mSurfaceView.setOnTouchListener(this);
         mPlayControlView = findViewById(R.id.play_control_view);
         mPlayControlView.setVideoPlayView(this);
         mPlayControlView.setVisibility(View.INVISIBLE);
@@ -101,14 +111,12 @@ public class VideoPlayView extends RelativeLayout implements View.OnClickListene
 
     private void initPlayer() {
         Log.d(TAG, "initPlayer: ");
-        mMediaPlayer = new MediaPlayer();
         mSurfaceHolder = mSurfaceView.getHolder();
         mSurfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 Log.d(TAG, "onSurfaceCreated: ");
                 onSurfaceCreated(holder);
-                Log.d(TAG, "onPrepared: isPlaying 111 " + mMediaPlayer.isPlaying());
             }
 
             @Override
@@ -118,84 +126,103 @@ public class VideoPlayView extends RelativeLayout implements View.OnClickListene
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
                 Log.d(TAG, "surfaceDestroyed: ");
-                Log.d(TAG, "onPrepared: isPlaying 120 " + mMediaPlayer.isPlaying());
                 if (mMediaPlayer.isPlaying()) {
                     mMediaPlayer.pause();
                     mHandler.removeMessages(MSG_SHOW_PROGRESS);
                 }
             }
         });
-        mMediaPlayer.setOnCompletionListener(onCompletionListener);
-        mMediaPlayer.setOnVideoSizeChangedListener(onVideoSizeChangedListener);
-        mMediaPlayer.setOnErrorListener(onErrorListener);
-        mMediaPlayer.setOnInfoListener(onInfoListener);
-        mMediaPlayer.setOnBufferingUpdateListener(onBufferingUpdateListener);
+        mPlayControlView.setControlViewCallBack(this);
     }
 
-    //播放完监听
-    MediaPlayer.OnCompletionListener onCompletionListener = new MediaPlayer.OnCompletionListener() {
-        @Override
-        public void onCompletion(MediaPlayer mp) {
-            Log.d(TAG, "onCompletion: ");
+    private void addMediaListener() {
+        //播放完监听
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                Log.d(TAG, "onCompletion: ");
 
-        }
-    };
+            }
+        });
+        //视频大小改变监听
+        mMediaPlayer.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
+            @Override
+            public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+                Log.d(TAG, "onVideoSizeChanged() called with: mp = [" + mp + "], width = [" + width + "], height = [" + height + "]");
+            }
+        });
+        //错误监听
+        mMediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                Log.d(TAG, "onError() called with: mp = [" + mp + "], what = [" + what + "], extra = [" + extra + "]");
+                return false;
+            }
+        });
+        //事件监听
+        mMediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+            @Override
+            public boolean onInfo(MediaPlayer mp, int what, int extra) {
+                Log.d(TAG, "onInfo() called with: mp = [" + mp + "], what = [" + what + "], extra = [" + extra + "]");
+                return false;
+            }
+        });
+        //缓冲变化监听
+        mMediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer mp, int percent) {
+                Log.d(TAG, "onBufferingUpdate() called with: mp = [" + mp + "], percent = [" + percent + "]");
+            }
+        });
 
-    //视频大小改变监听
-    MediaPlayer.OnVideoSizeChangedListener onVideoSizeChangedListener = new MediaPlayer.OnVideoSizeChangedListener() {
-        @Override
-        public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
-            Log.d(TAG, "onVideoSizeChanged() called with: mp = [" + mp + "], width = [" + width + "], height = [" + height + "]");
-        }
-    };
+        mMediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+            @Override
+            public void onSeekComplete(MediaPlayer mp) {
+                Log.d(TAG, "onSeekComplete: " + mMediaPlayer.getCurrentPosition() + "  /  " + mMediaPlayer.getDuration());
+                if (mMediaPlayer.getDuration() == 0) {
+                    onPlayError();
+                    return;
+                }
 
-    //错误监听
-    MediaPlayer.OnErrorListener onErrorListener = new MediaPlayer.OnErrorListener() {
-        @Override
-        public boolean onError(MediaPlayer mp, int what, int extra) {
-            Log.d(TAG, "onError() called with: mp = [" + mp + "], what = [" + what + "], extra = [" + extra + "]");
-            return false;
-        }
-    };
+                if (mStartPlay && !mMediaPlayer.isPlaying()) {
+                    start();
+                    mPlayControlView.setPlay(false);
+                }
+                // showProgress();
+            }
+        });
+    }
 
-    //事件监听
-    MediaPlayer.OnInfoListener onInfoListener = new MediaPlayer.OnInfoListener() {
-        @Override
-        public boolean onInfo(MediaPlayer mp, int what, int extra) {
-            Log.d(TAG, "onInfo() called with: mp = [" + mp + "], what = [" + what + "], extra = [" + extra + "]");
-            return false;
-        }
-    };
-
-    //缓冲变化监听
-    MediaPlayer.OnBufferingUpdateListener onBufferingUpdateListener = new MediaPlayer.OnBufferingUpdateListener() {
-        @Override
-        public void onBufferingUpdate(MediaPlayer mp, int percent) {
-            Log.d(TAG, "onBufferingUpdate() called with: mp = [" + mp + "], percent = [" + percent + "]");
-        }
-    };
+    private void onPlayError() {
+        Toast.makeText(getContext(), "无法播放次视频数据", Toast.LENGTH_SHORT).show();
+        //mHandler.removeMessages(MSG_SHOW_PROGRESS);
+        mPlayControlView.setProgress(progressTo);
+    }
 
     private void onSurfaceCreated(SurfaceHolder holder) {
         Log.d(TAG, "onSurfaceCreated: ");
-        mMediaPlayer.setDisplay(holder);
-        if (!mSetDataSource) {
-            String videoUrl2 = videoUri;
-            Uri uri = Uri.parse(videoUrl2);
-            try {
-                mMediaPlayer.setDataSource(uri.toString());
-            } catch (IOException e) {
-                Log.e(TAG, "onSurfaceCreated: " + e);
-                e.printStackTrace();
+        if (null == mMediaPlayer) {
+            mMediaPlayer = new MediaPlayer();
+            if (!mSetDataSource) {
+                Uri uri = Uri.parse(videoUri);
+                try {
+                    mMediaPlayer.setDataSource(uri.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                mSetDataSource = true;
             }
-            mSetDataSource = true;
+            addMediaListener();
         }
+        mMediaPlayer.setDisplay(holder);
+
         if (mStartPlay) {
             mMediaPlayer.start();
             mHandler.sendEmptyMessageDelayed(MSG_SHOW_PROGRESS, TIME_INTERVAL);
         }
     }
 
-    private void startPlay() {
+    private void openVideo() {
         mPhotoImg.setVisibility(View.INVISIBLE);
         mPlayImg.setVisibility(View.INVISIBLE);
         try {
@@ -203,37 +230,59 @@ public class VideoPlayView extends RelativeLayout implements View.OnClickListene
             mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                    mPlayControlView.setMediaInfo(mMediaPlayer);
+                    mPlayControlView.setMediaPlayer(mMediaPlayer);
                     mMediaPlayer.start();
                     showProgress();
                     mStartPlay = true;
                 }
             });
-
         } catch (IllegalStateException e) {
-            Log.d(TAG, "startPlay: IllegalStateException " + e);
+            Log.d(TAG, "startPlay: error " + e);
             e.printStackTrace();
         }
     }
-
 
     public void stopPlay() {
         mMediaPlayer.stop();
     }
 
+    @Override
+    public void start() {
+        mMediaPlayer.start();
+        showProgress();
+    }
+
+    @Override
+    public void pause() {
+        mMediaPlayer.pause();
+        removeMgsShowProgress();
+    }
+
+    @Override
     public void seekTo(int progress) {
-        if (null != mMediaPlayer) {
-            mMediaPlayer.seekTo(progress);
+        progressTo = progress;
+        mMediaPlayer.seekTo(progress);
+    }
+
+
+    public void release() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.reset();
+            mMediaPlayer.release();
+            mMediaPlayer = null;
         }
     }
 
-    OnTouchListener onTouchListener = new OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            showControl();
-            return true;
-        }
-    };
+    public void removeMgsShowProgress() {
+        mHandler.removeMessages(MSG_SHOW_PROGRESS);
+    }
+
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        showControl();
+        return false;
+    }
 
     private void showControl() {
         mPlayControlView.show();
@@ -249,7 +298,7 @@ public class VideoPlayView extends RelativeLayout implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.play_img:
-                startPlay();
+                openVideo();
                 break;
         }
     }
@@ -280,12 +329,12 @@ public class VideoPlayView extends RelativeLayout implements View.OnClickListene
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         destroy();
+
     }
 
     public void destroy() {
         mHandler.removeCallbacksAndMessages(null);
-        mMediaPlayer.stop();
-        mMediaPlayer.release();
+        release();
     }
 
     public static class VideoPlayInfo {
