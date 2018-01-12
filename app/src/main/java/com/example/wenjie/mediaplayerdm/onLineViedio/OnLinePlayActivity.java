@@ -75,7 +75,7 @@ public class OnLinePlayActivity extends AppCompatActivity {
 
     @OnClick(R.id.ConstraintLayout)
     void change() {
-        WindowUtils.changeScreenOrientation(OnLinePlayActivity.this);
+        //WindowUtils.changeScreenOrientation(OnLinePlayActivity.this);
     }
 
 }
