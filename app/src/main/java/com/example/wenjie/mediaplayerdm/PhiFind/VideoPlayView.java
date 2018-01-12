@@ -1,6 +1,7 @@
 package com.example.wenjie.mediaplayerdm.PhiFind;
 
 import android.content.Context;
+import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.wenjie.mediaplayerdm.R;
+import com.example.wenjie.mediaplayerdm.util.RotationUitls;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -43,7 +45,11 @@ public class VideoPlayView extends RelativeLayout implements View.OnClickListene
 
     private MediaPlayer mMediaPlayer;
     private SurfaceHolder mSurfaceHolder;
+    private NiceTextureView mTextureView;
+    private SurfaceTexture mSurfaceTexture;
+
     private Handler mHandler;
+    private Context mContext;
 
     private boolean mSetDataSource;
     private boolean mStartPlay;
@@ -97,6 +103,7 @@ public class VideoPlayView extends RelativeLayout implements View.OnClickListene
 
     private void init() {
         View.inflate(getContext(), R.layout.video_play_view, this);
+        mContext = getContext();
         mPhotoImg = findViewById(R.id.video_previous_img);
         mPlayImg = findViewById(R.id.play_img);
         mPlayImg.setOnClickListener(this);
@@ -262,6 +269,12 @@ public class VideoPlayView extends RelativeLayout implements View.OnClickListene
     public void seekTo(int progress) {
         progressTo = progress;
         mMediaPlayer.seekTo(progress);
+    }
+
+    @Override
+    public void fullScreen() {
+        Toast.makeText(getContext(), "全屏", Toast.LENGTH_SHORT).show();
+        RotationUitls.setRotation(mSurfaceView, 180);
     }
 
 

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ public class VideoPlayControlView extends RelativeLayout implements View.OnClick
     private TextView duration_view;
     private SeekBar seek_bar;
     private TextView play_btn;
+    private ImageView fullScreen;
 
     private VideoPlayView videoPlayView;
 
@@ -45,6 +47,8 @@ public class VideoPlayControlView extends RelativeLayout implements View.OnClick
         duration_view = findViewById(R.id.duration_view);
         play_btn = findViewById(R.id.play_btn);
         play_btn.setOnClickListener(this);
+        fullScreen = findViewById(R.id.full_screen_img);
+        fullScreen.setOnClickListener(this);
         seek_bar = findViewById(R.id.seek_bar);
         seek_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -131,7 +135,14 @@ public class VideoPlayControlView extends RelativeLayout implements View.OnClick
                     setPlay();
                 }
                 break;
+            case R.id.full_screen_img:
+                fullScreenAction();
+                break;
         }
+    }
+
+    private void fullScreenAction() {
+        mControlViewCallBack.fullScreen();
     }
 
     private void setPause() {
@@ -157,6 +168,7 @@ public class VideoPlayControlView extends RelativeLayout implements View.OnClick
         void start();
         void pause();
         void seekTo(int pos);
+        void fullScreen();
     }
 
     public void setControlViewCallBack(ControlViewCallBack controlViewCallBack) {
