@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.wenjie.mediaplayerdm.base.MyApp;
+
 /**
  * Created by wen.jie on 2018/1/10.
  */
@@ -56,5 +58,21 @@ public class WindowUtils {
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
+
+    public static int screenWidth() {
+        return MyApp.getContext().getResources().getDisplayMetrics().widthPixels;
+    }
+
+    public static int screenHeight() {
+        return MyApp.getContext().getResources().getDisplayMetrics().heightPixels;
+    }
+
+    public static void changeScreenOrientation(Activity activity) {
+        if (!isOrientationLand(activity)) {
+           setOrientationLand(activity);
+        } else {
+            setOrientationPort(activity);
+        }
+    }
 
 }

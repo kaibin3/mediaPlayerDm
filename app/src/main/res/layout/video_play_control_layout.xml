@@ -15,11 +15,11 @@
 
 
         <TextView
-            android:layout_marginEnd="10dp"
             android:id="@+id/play_btn"
-            android:text="播放"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="播放" />
 
 
         <TextView
@@ -32,10 +32,10 @@
 
         <SeekBar
             android:id="@+id/seek_bar"
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp" />
+            android:layout_marginLeft="3dp"
+            android:layout_weight="1" />
 
 
         <TextView
@@ -45,6 +45,15 @@
             android:layout_marginLeft="5dp"
             android:text="23:54"
             android:textColor="@color/red" />
+
+
+        <ImageView
+            android:id="@+id/full_screen_img"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/icon_full_screen" />
 
     </LinearLayout>
 

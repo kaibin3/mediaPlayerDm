@@ -1,7 +1,6 @@
 package com.example.wenjie.mediaplayerdm.onLineViedio;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -36,6 +35,7 @@ public class OnLinePlayActivity extends AppCompatActivity {
 
         addFragment(onLinePlayFragment);
         // addFragment(new VideoFragment());
+
         ButterKnife.bind(this);
     }
 
@@ -70,32 +70,6 @@ public class OnLinePlayActivity extends AppCompatActivity {
         } else {
             setContentView(R.layout.activity_on_line_play);
             ButterKnife.bind(this); //切换屏幕后需要再ButterKnife.bind
-        }
-    }
-
-    private void reAddFragment(Fragment oldFragment, Fragment newFragment1) {
-        FragmentManager fragmentManager = getFragmentManager();
-        if (oldFragment != null) {
-            FragmentTransaction trans = fragmentManager.beginTransaction();
-            trans.remove(oldFragment);
-            Fragment newFragment = new OnLinePlayFragment();
-            if (newFragment != null) {
-                trans.add(R.id.play_fragment, newFragment1, FRAGMENT_TAG);
-            }
-            trans.commit();
-        }
-    }
-
-    private void reAddFragment1(Fragment oldFragment, Fragment newFragment1) {
-        FragmentManager fragmentManager = getFragmentManager();
-        if (oldFragment != null) {
-            FragmentTransaction trans = fragmentManager.beginTransaction();
-            trans.hide(oldFragment);
-            //  Fragment newFragment = new OnLinePlayFragment();
-            if (newFragment1 != null) {
-                trans.add(R.id.play_fragment, newFragment1, FRAGMENT_TAG);
-            }
-            trans.commit();
         }
     }
 

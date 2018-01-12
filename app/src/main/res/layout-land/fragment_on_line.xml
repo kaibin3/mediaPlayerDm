@@ -7,7 +7,7 @@
     <SurfaceView
         android:id="@+id/on_line_surface_view"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="50dp" />
 
     <include layout="@layout/play_control" />
 

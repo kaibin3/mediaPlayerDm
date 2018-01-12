@@ -19,4 +19,12 @@ public class MyApp extends Application {
         context = this;
         mainHandler = new Handler();
     }
+
+    public static Context getContext() {
+        return context;
+    }
+
+    public static Handler getMainHandler() {
+        return mainHandler;
+    }
 }

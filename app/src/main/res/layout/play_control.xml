@@ -4,7 +4,39 @@
     android:id="@+id/play_control_content"
     android:layout_width="wrap_content"
     android:layout_height="40dp"
+    android:layout_alignBottom="@id/on_line_surface_view"
     tools:showIn="@layout/fragment_on_line">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/current_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <SeekBar
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+
+        <TextView
+            android:id="@+id/end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/full_screen"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/icon_full_screen" />
+
+    </LinearLayout>
 
 </RelativeLayout>

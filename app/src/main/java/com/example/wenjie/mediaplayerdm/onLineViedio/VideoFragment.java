@@ -42,7 +42,7 @@ public class VideoFragment extends Fragment {
 
 
         //网络视频
-        String videoUrl2 = Constants.phiVideoUrl;
+        String videoUrl2 = Constants.localVideoUrl2;
 
         Uri uri = Uri.parse(videoUrl2);
 
