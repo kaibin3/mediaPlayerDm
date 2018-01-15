@@ -1,4 +1,4 @@
-package com.example.wenjie.mediaplayerdm.PhiFind;
+package com.example.wenjie.mediaplayerdm.PhiFind.mediaPlay;
 
 import android.content.Context;
 import android.view.TextureView;

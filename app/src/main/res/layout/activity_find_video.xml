@@ -10,7 +10,7 @@
 
     <include layout="@layout/title_bar" />
 
-    <com.example.wenjie.mediaplayerdm.PhiFind.VideoPlayView
+    <com.example.wenjie.mediaplayerdm.PhiFind.mediaPlay.VideoPlayView
         android:id="@+id/video_play_view"
         android:layout_width="match_parent"
         android:layout_height="200dp" />

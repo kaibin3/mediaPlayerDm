@@ -1,7 +1,5 @@
 package com.example.wenjie.mediaplayerdm.PhiFind.entry;
 
-import com.example.wenjie.mediaplayerdm.PhiFind.VideoPlayView;
-
 import java.util.List;
 
 /**
@@ -10,25 +8,25 @@ import java.util.List;
 
 public class FindVideoEntry {
 
-    private String photoUrl;
-    private String VideoUrl;
+    private String photoUri;
+    private String videoUri;
     private List<FindCardInfo> recommendInfo;
-    private VideoPlayView.VideoPlayInfo mediaInfo;
+    //private VideoPlayView.VideoPlayInfo mediaInfo;
 
-    public String getPhotoUrl() {
-        return photoUrl;
+    public String getPhotoUri() {
+        return photoUri;
     }
 
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
+    public void setPhotoUri(String photoUri) {
+        this.photoUri = photoUri;
     }
 
-    public String getVideoUrl() {
-        return VideoUrl;
+    public String getVideoUri() {
+        return videoUri;
     }
 
-    public void setVideoUrl(String videoUrl) {
-        VideoUrl = videoUrl;
+    public void setVideoUri(String videoUri) {
+        this.videoUri = videoUri;
     }
 
     public List<FindCardInfo> getRecommendInfo() {
@@ -39,21 +37,20 @@ public class FindVideoEntry {
         this.recommendInfo = findCardInfos;
     }
 
-    public VideoPlayView.VideoPlayInfo getMediaInfo() {
+    /*public VideoPlayView.VideoPlayInfo getMediaInfo() {
         return mediaInfo;
     }
 
     public void setMediaInfo(VideoPlayView.VideoPlayInfo mediaInfo) {
         this.mediaInfo = mediaInfo;
-    }
+    }*/
 
     @Override
     public String toString() {
         return "FindVideoEntry{" +
-                "photoUrl='" + photoUrl + '\'' +
-                ", VideoUrl='" + VideoUrl + '\'' +
+                "photoUrl='" + photoUri + '\'' +
+                ", VideoUrl='" + videoUri + '\'' +
                 ", recommendInfo=" + recommendInfo +
-                ", mediaInfo=" + mediaInfo +
                 '}';
     }
 }

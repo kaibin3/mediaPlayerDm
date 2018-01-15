@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.wenjie.mediaplayerdm.LocalMediasActivity;
 import com.example.wenjie.mediaplayerdm.PhiFind.FindVideoActivity;
 import com.example.wenjie.mediaplayerdm.R;
+import com.example.wenjie.mediaplayerdm.netDm.TextureViewMediaDmActivity;
 import com.example.wenjie.mediaplayerdm.onLineViedio.OnLinePlayActivity;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         showActivity.add(new ActivityName(this, FindVideoActivity.class, "phicomm Mp4"));
      //   showActivity.add(new ActivityName(this, VideoSurfaceDemo.class, "VideoSurfaceDemo Mp4"));
        // showActivity.add(new ActivityName(this, LiveCameraActivity.class, "TextureView  dm"));
+        showActivity.add(new ActivityName(this, TextureViewMediaDmActivity.class, "TextureView Mp4"));
 
 
         for (int i = 0; i < showActivity.size(); i++) {

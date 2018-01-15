@@ -24,10 +24,12 @@ public class FindVideoPresenter implements FindVideoContract.Presenter {
     public void loadInfo(String id) {
         FindVideoEntry entry = new FindVideoEntry();
 
-        VideoPlayView.VideoPlayInfo mediaInfo = new VideoPlayView.VideoPlayInfo();
+       /* VideoPlayView.VideoPlayInfo mediaInfo = new VideoPlayView.VideoPlayInfo();
         mediaInfo.setPhotoUri(Constants.baiduPhotoUrl);
         mediaInfo.setVideoUri(Constants.localVideoUrl2);
-        entry.setMediaInfo(mediaInfo);
+        entry.setMediaInfo(mediaInfo);*/
+        entry.setPhotoUri(Constants.baiduPhotoUrl);
+        entry.setVideoUri(Constants.localVideoUrl2);
 
         List<FindCardInfo> findCardInfos = new ArrayList<>();
         for (int i = 0; i < 4; i++) {

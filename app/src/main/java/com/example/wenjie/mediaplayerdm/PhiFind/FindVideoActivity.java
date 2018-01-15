@@ -8,6 +8,7 @@ import android.widget.ListView;
 
 import com.example.wenjie.mediaplayerdm.PhiFind.entry.FindCardInfo;
 import com.example.wenjie.mediaplayerdm.PhiFind.entry.FindVideoEntry;
+import com.example.wenjie.mediaplayerdm.PhiFind.mediaPlay.VideoPlayView;
 import com.example.wenjie.mediaplayerdm.R;
 import com.example.wenjie.mediaplayerdm.util.TitlebarUtils;
 import com.phicomm.widgets.PhiTitleBar;
@@ -64,9 +65,8 @@ public class FindVideoActivity extends Activity implements FindVideoContract.Vie
 
     @Override
     public void upDate(FindVideoEntry videoEntry) {
-        videoPlayView.setMediaInfo(videoEntry.getMediaInfo());
-        //videoPlayView.setPhotoUrl(videoEntry.getPhotoUrl());
-        //videoPlayView.setVideoUrl(videoEntry.getVideoUrl());
+        videoPlayView.setPhotoUri(videoEntry.getPhotoUri());
+        videoPlayView.setVideoUri(videoEntry.getVideoUri());
         mAdapter.setData(videoEntry.getRecommendInfo());
     }
 }
