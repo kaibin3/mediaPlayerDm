@@ -16,8 +16,23 @@ import android.widget.ImageView;
 
 /**
  * Created by wen.jie on 2018/1/4.
+ * <p>
+ * 作者：前世小书童
+ * 链接：https://www.jianshu.com/p/626dbd93207d
+ * 來源：简书
+ * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
  */
 
+
+/**
+ * 首先简单了解下BitmapShader，BitmapShader是Shader的子类，Shader在三维软件中我们称之为着色器，所以通俗的理解，
+ * Shader的作用是给图像着色或者上色，BitmapShader允许我们载入一张图片来给图像着色,具体不做过多的解释，
+ * 结尾贴出关于Shader的具体使用的文章
+ * <p>
+ * 所以其实根据上面对于BitmapShader的描述，其实就可以对圆角ImageView有一定的思路了吧，
+ * 画一个圆角矩形，然后把本来画上去的图像着色到圆角矩形上，这样就实现了圆角的ImageView
+ */
+//可用
 @SuppressLint("AppCompatCustomView")
 public class CornerImageView1 extends ImageView {
 
@@ -52,14 +67,13 @@ public class CornerImageView1 extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (getDrawable() == null){
+        if (getDrawable() == null) {
             return;
         }
         Bitmap bitmap = drawableToBitamp(getDrawable());
         mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         float scale = 1.0f;
-        if (!(bitmap.getWidth() == getWidth() && bitmap.getHeight() == getHeight()))
-        {
+        if (!(bitmap.getWidth() == getWidth() && bitmap.getHeight() == getHeight())) {
             // 如果图片的宽或者高与view的宽高不匹配，计算出需要缩放的比例；缩放后的图片的宽高，一定要大于我们view的宽高；所以我们这里取大值；
             scale = Math.max(getWidth() * 1.0f / bitmap.getWidth(),
                     getHeight() * 1.0f / bitmap.getHeight());
@@ -70,15 +84,12 @@ public class CornerImageView1 extends ImageView {
         mBitmapShader.setLocalMatrix(mMatrix);
         // 设置shader
         mPaint.setShader(mBitmapShader);
-        canvas.drawRoundRect(new RectF(0,0,getWidth(),getHeight()), mBorderRadius, mBorderRadius,
-                mPaint);
+        canvas.drawRoundRect(new RectF(0, 0, getWidth(), getHeight()), mBorderRadius, mBorderRadius, mPaint);
     }
 
 
-    private Bitmap drawableToBitamp(Drawable drawable)
-    {
-        if (drawable instanceof BitmapDrawable)
-        {
+    private Bitmap drawableToBitamp(Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
             BitmapDrawable bd = (BitmapDrawable) drawable;
             return bd.getBitmap();
         }
