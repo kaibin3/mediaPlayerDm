@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
@@ -47,14 +48,12 @@ import java.math.RoundingMode;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -738,4 +737,22 @@ public class Utils {
     public static void runOnUIThread(Runnable runnable) {
         MyApp.mainHandler.post(runnable);
     }
+
+
+    /**
+     * Get activity from context object
+     *
+     * @param context something
+     * @return object of Activity or null if it is not Activity
+     */
+    public static Activity scanForActivity(Context context) {
+        if (context == null) return null;
+        if (context instanceof Activity) {
+            return (Activity) context;
+        } else if (context instanceof ContextWrapper) {
+            return scanForActivity(((ContextWrapper) context).getBaseContext());
+        }
+        return null;
+    }
+
 }

@@ -13,7 +13,7 @@ import com.example.wenjie.mediaplayerdm.R;
 import com.example.wenjie.mediaplayerdm.util.TitlebarUtils;
 import com.phicomm.widgets.PhiTitleBar;
 
-public class FindVideoActivity extends Activity implements FindVideoContract.View {
+public class RecommendVideoActivity extends Activity implements FindVideoContract.View {
     private static final String TAG = "FindVideoActivity";
     public static final String VIDEO_ID = "video_id";
     public static final String TITLE = "title";
@@ -57,7 +57,7 @@ public class FindVideoActivity extends Activity implements FindVideoContract.Vie
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FindCardInfo cardInfo = mAdapter.getItem(position);
                 videoPlayView.stopPlay();
-                videoPlayView.setPhotoUri(cardInfo.getPhotoUrl());
+                videoPlayView.setImage(cardInfo.getPhotoUrl());
                 videoPlayView.setVideoUri(cardInfo.getVideoUrl());
             }
         });
@@ -65,7 +65,7 @@ public class FindVideoActivity extends Activity implements FindVideoContract.Vie
 
     @Override
     public void upDate(FindVideoEntry videoEntry) {
-        videoPlayView.setPhotoUri(videoEntry.getPhotoUri());
+        videoPlayView.setImage(videoEntry.getPhotoUri());
         videoPlayView.setVideoUri(videoEntry.getVideoUri());
         mAdapter.setData(videoEntry.getRecommendInfo());
     }

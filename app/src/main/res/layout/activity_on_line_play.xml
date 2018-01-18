@@ -12,7 +12,7 @@
         android:id="@+id/play_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="#3018cbfd"
         android:orientation="vertical"
         android:tag="Fragment_One">
 

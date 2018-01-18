@@ -41,7 +41,7 @@
 
         </activity>
         <activity
-            android:name=".PhiFind.FindVideoActivity"
+            android:name=".PhiFind.RecommendVideoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"></activity>
 
         <activity android:name=".netDm.VideoSurfaceDemo" />

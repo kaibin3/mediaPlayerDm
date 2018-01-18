@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.wenjie.mediaplayerdm.LocalMediasActivity;
-import com.example.wenjie.mediaplayerdm.PhiFind.FindVideoActivity;
+import com.example.wenjie.mediaplayerdm.PhiFind.RecommendVideoActivity;
 import com.example.wenjie.mediaplayerdm.R;
 import com.example.wenjie.mediaplayerdm.netDm.TextureViewMediaDmActivity;
 import com.example.wenjie.mediaplayerdm.onLineViedio.OnLinePlayActivity;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         showActivity.add(new ActivityName(this, LocalMediasActivity.class, "本地视频列表"));
         // showActivity.add(new ActivityName(this, Mp4Activity.class, "Mp4"));
         showActivity.add(new ActivityName(this, OnLinePlayActivity.class, "在线视频 Mp4"));
-        showActivity.add(new ActivityName(this, FindVideoActivity.class, "phicomm Mp4"));
+        showActivity.add(new ActivityName(this, RecommendVideoActivity.class, "phicomm Mp4"));
      //   showActivity.add(new ActivityName(this, VideoSurfaceDemo.class, "VideoSurfaceDemo Mp4"));
        // showActivity.add(new ActivityName(this, LiveCameraActivity.class, "TextureView  dm"));
         showActivity.add(new ActivityName(this, TextureViewMediaDmActivity.class, "TextureView Mp4"));
@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
     }
+
 
 
     @Override

@@ -7,7 +7,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
 import android.util.TypedValue;
+import android.view.View;
 import android.view.WindowManager;
+
+import com.example.wenjie.mediaplayerdm.util.AnimationUtils;
 
 import java.util.Formatter;
 import java.util.Locale;
@@ -155,7 +158,6 @@ public class NiceUtil {
     }
 
 
-
     public static String formatDuration(int duration) {
         duration = duration / 1000;
         int min = duration / 60;
@@ -165,11 +167,17 @@ public class NiceUtil {
         return minStr + ":" + secondStr;
     }
 
-    private static String getTimeStr(int time) {
+    public static String getTimeStr(int time) {
         if (time < 10) {
             return "0" + time;
         }
         return "" + time;
+    }
+
+
+    public static void rotationAnim(View view) {
+        AnimationUtils.rotationAnim(view);
+
     }
 
 }

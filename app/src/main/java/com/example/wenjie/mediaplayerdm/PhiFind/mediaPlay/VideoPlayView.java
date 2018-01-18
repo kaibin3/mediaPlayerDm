@@ -22,16 +22,16 @@ import com.example.wenjie.mediaplayerdm.util.WindowUtils;
 import java.io.IOException;
 
 
-public class VideoPlayView extends RelativeLayout implements VideoPlayControlView.VideoControl {
+public class VideoPlayView extends RelativeLayout implements VideoContract.VideoPlayer {
     private static final String TAG = "VideoPlayView";
     public static final int MODE_FULL_SCREEN = 11;
     public static final int MODE_NORMAL = 10;
     private int screenMode;
 
     private String videoUri;
-    private String photoUri;
+    private String imageUri;
 
-    private VideoPlayControlView mPlayControlView;
+    private VideoPlayAbsControl mPlayControl;
 
     private MediaPlayer mMediaPlayer;
     private NiceTextureView mTextureView;
@@ -39,15 +39,9 @@ public class VideoPlayView extends RelativeLayout implements VideoPlayControlVie
     private Surface mSurface;
 
     private Context mContext;
-    private boolean mStartPlay;
-    private int progressTo;
-
     private FrameLayout mContainer;
 
-    public void showProgress() {
-        int currentPosition = mMediaPlayer.getCurrentPosition();
-        mPlayControlView.setProgress(currentPosition);
-    }
+    private boolean mIsStarted;
 
     public VideoPlayView(Context context) {
         super(context);
@@ -68,24 +62,21 @@ public class VideoPlayView extends RelativeLayout implements VideoPlayControlVie
 
         initTextureView();
         addTextureView();
-        mPlayControlView = new VideoPlayControlView(getContext());
-        setPlayControlView(mPlayControlView);
+        mPlayControl = new VideoPlayControlView(getContext());
+        setPlayControlView(mPlayControl);
     }
 
-    public void setPlayControlView(VideoPlayControlView playControlView) {
-
-        mPlayControlView = playControlView;
+    public void setPlayControlView(VideoPlayAbsControl playControlView) {
+        mPlayControl = playControlView;
         mContainer.removeView(playControlView);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        mContainer.addView(mPlayControlView, params);
-        mPlayControlView.setPlayer(this);
-        mPlayControlView.setControlViewCallBack(this);
+        mContainer.addView(mPlayControl, params);
     }
 
 
     private void onPlayError() {
         Toast.makeText(getContext(), "无法播放次视频数据", Toast.LENGTH_SHORT).show();
-        mPlayControlView.setProgress(progressTo);
+        //   mPlayControlView.setProgress(progressTo);
     }
 
     TextureView.SurfaceTextureListener mSurfaceListener = new TextureView.SurfaceTextureListener() {
@@ -132,7 +123,7 @@ public class VideoPlayView extends RelativeLayout implements VideoPlayControlVie
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            mPlayControlView.setMediaPlayer(mMediaPlayer);
+
         }
 
     };
@@ -147,10 +138,7 @@ public class VideoPlayView extends RelativeLayout implements VideoPlayControlVie
 
     private void addTextureView() {
         mContainer.removeView(mTextureView);
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                Gravity.CENTER);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER);
         mContainer.addView(mTextureView, 0, params);
     }
 
@@ -158,6 +146,8 @@ public class VideoPlayView extends RelativeLayout implements VideoPlayControlVie
     private void initPlayer() {
         Log.d(TAG, "initPlayer: ");
         mMediaPlayer = new MediaPlayer();
+        setMediaListener();
+        mPlayControl.setVideoPlayer(VideoPlayView.this);
     }
 
 
@@ -200,7 +190,6 @@ public class VideoPlayView extends RelativeLayout implements VideoPlayControlVie
                 Log.d(TAG, "onBufferingUpdate() called with: mp = [" + mp + "], percent = [" + percent + "]");
             }
         });
-        //
         mMediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
             @Override
             public void onSeekComplete(MediaPlayer mp) {
@@ -208,11 +197,6 @@ public class VideoPlayView extends RelativeLayout implements VideoPlayControlVie
                 if (mMediaPlayer.getDuration() == 0) {
                     onPlayError();
                     return;
-                }
-
-                if (mStartPlay && !mMediaPlayer.isPlaying()) {
-                    play();
-                    mPlayControlView.setPlay(false);
                 }
             }
         });
@@ -226,7 +210,7 @@ public class VideoPlayView extends RelativeLayout implements VideoPlayControlVie
     @Override
     public void play() {
         mMediaPlayer.start();
-        showProgress();
+        // showProgress();
     }
 
     @Override
@@ -236,21 +220,29 @@ public class VideoPlayView extends RelativeLayout implements VideoPlayControlVie
 
     @Override
     public void seekTo(int progress) {
-        progressTo = progress;
         mMediaPlayer.seekTo(progress);
     }
 
     @Override
     public void startPlay() {
-        setMediaListener();
+        //setMediaListener();
         mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mMediaPlayer.start();
-                mPlayControlView.onPlayStart();
+                mPlayControl.onPlayerStart();
+                mIsStarted = true;
             }
         });
-        mMediaPlayer.prepareAsync();
+
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mMediaPlayer.prepareAsync();
+            }
+        }, 2000);
+
+
     }
 
     @Override
@@ -267,7 +259,7 @@ public class VideoPlayView extends RelativeLayout implements VideoPlayControlVie
         contentView.addView(mContainer, params);
 
         screenMode = MODE_FULL_SCREEN;
-        mPlayControlView.screenMode(screenMode);
+        mPlayControl.setScreenMode(screenMode);
     }
 
     @Override
@@ -282,10 +274,8 @@ public class VideoPlayView extends RelativeLayout implements VideoPlayControlVie
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(mContainer, params);
         screenMode = MODE_NORMAL;
-        mPlayControlView.screenMode(screenMode);
-
+        mPlayControl.setScreenMode(screenMode);
     }
-
 
     public void release() {
         if (mMediaPlayer != null) {
@@ -301,18 +291,17 @@ public class VideoPlayView extends RelativeLayout implements VideoPlayControlVie
         initPlayer();
     }
 
-    public void setPhotoUri(String photoUri) {
-        this.photoUri = photoUri;
+    public void setImage(String photoUri) {
+        this.imageUri = photoUri;
+        mPlayControl.setImage(photoUri);
     }
 
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.d(TAG, "onTouchEvent: ");
-        if (null != mMediaPlayer && mMediaPlayer.isPlaying()) {
-            mPlayControlView.show();
-        }
-        return super.onTouchEvent(event);
+        return mPlayControl.onTouchEvent(event);
+       // Log.d(TAG, "onTouchEvent: ");
+       // return super.onTouchEvent(event);
     }
 
     @Override
@@ -326,4 +315,32 @@ public class VideoPlayView extends RelativeLayout implements VideoPlayControlVie
     }
 
 
+    @Override
+    public int getDuration() {
+        if (null != mMediaPlayer) {
+            return mMediaPlayer.getDuration();
+        }
+        return 0;
+    }
+
+    @Override
+    public int getCurrentPosition() {
+        if (null != mMediaPlayer) {
+            return mMediaPlayer.getCurrentPosition();
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean isPlaying() {
+        if (null != mMediaPlayer) {
+            return mMediaPlayer.isPlaying();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isStarted() {
+        return mIsStarted;
+    }
 }
