@@ -6,8 +6,6 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -216,11 +214,6 @@ public class VideoPlayControlView extends VideoPlayAbsControl implements View.On
     @Override
     public void show() {
         Log.d(TAG, "show: ");
-        //mPlayControlView.setAlpha(1);
-        //  ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mPlayControlView, "alpha", 0f, 1f);
-        // objectAnimator.setDuration(50);
-        //objectAnimator.start();
-
         mContainer.setVisibility(View.VISIBLE);
         mBottomLayout.setVisibility(View.VISIBLE);
         mHandler.removeMessages(MSG_DISMISS_CONTROL);
@@ -248,7 +241,6 @@ public class VideoPlayControlView extends VideoPlayAbsControl implements View.On
         showCurrentProgress();
     }
 
-
     private void showOrDismiss() {
         if (!mVideoPlayer.isStarted()) {
             return;
@@ -266,28 +258,6 @@ public class VideoPlayControlView extends VideoPlayAbsControl implements View.On
         mCurrentTimeView.setText(NiceUtil.formatDuration(progress));
     }
 
-    public void dismissAlpha() {
-        //ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mPlayControlView, "alpha", 1f, 0f);
-        //objectAnimator.start();
-        AlphaAnimation alphaAnimation = new AlphaAnimation(1f, 0f);
-        alphaAnimation.setDuration(300);
-        alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                mContainer.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
-        startAnimation(alphaAnimation);
-
-    }
 
     private void changeScreen() {
         if (VideoPlayView.MODE_NORMAL == mScreenMode) {

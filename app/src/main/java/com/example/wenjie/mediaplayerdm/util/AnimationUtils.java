@@ -2,6 +2,7 @@ package com.example.wenjie.mediaplayerdm.util;
 
 import android.animation.ObjectAnimator;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
@@ -42,5 +43,41 @@ public class AnimationUtils {
         rotation.setDuration(500);
         rotation.start();
     }
+
+    /**
+     * 隐藏view  通过透明度渐变
+     */
+    public static void dismissViewAlpha(final View view) {
+        //ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mPlayControlView, "alpha", 1f, 0f);
+        //objectAnimator.start();
+        AlphaAnimation alphaAnimation = new AlphaAnimation(1f, 0f);
+        alphaAnimation.setDuration(300);
+        alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                view.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+        view.startAnimation(alphaAnimation);
+    }
+
+    /**
+     * 显示view 通过透明度渐变
+     */
+    public void showViewAlpha(final View view) {
+        view.setAlpha(1);
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+        objectAnimator.setDuration(50);
+        objectAnimator.start();
+    }
+
 
 }
