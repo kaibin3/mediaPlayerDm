@@ -11,6 +11,8 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.wenjie.mediaplayerdm.R;
@@ -33,6 +35,7 @@ public class TextureViewMediaDmActivity extends Activity {
     private Surface mSurface;
 
     private ImageView videoImage;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,19 @@ public class TextureViewMediaDmActivity extends Activity {
         mTextureView.setSurfaceTextureListener(surfaceTextureListener);//设置监听函数  重写4个方法
 
         videoImage = findViewById(R.id.video_image);
+        findViewById(R.id.play_btn).setOnClickListener(onClickListener);
+    }
+
+
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startPlay();
+        }
+    };
+
+    private void startPlay() {
+        new PlayerVideo().start();//开启一个线程去播放视频
     }
 
 
@@ -50,7 +66,7 @@ public class TextureViewMediaDmActivity extends Activity {
         public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
             System.out.println("onSurfaceTextureAvailable onSurfaceTextureAvailable");
             mSurface = new Surface(surfaceTexture);
-            new PlayerVideo().start();//开启一个线程去播放视频
+            //new PlayerVideo().start();//开启一个线程去播放视频
         }
 
         @Override

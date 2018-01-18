@@ -140,7 +140,7 @@ public class VideoPlayControlView extends VideoPlayAbsControl implements View.On
                 bottomPlayClick();
                 break;
             case R.id.full_screen_img:
-                changeScreen();
+                changeWindowsSize();
                 break;
             default:
                 showOrDismiss();
@@ -259,7 +259,7 @@ public class VideoPlayControlView extends VideoPlayAbsControl implements View.On
     }
 
 
-    private void changeScreen() {
+    private void changeWindowsSize() {
         if (VideoPlayView.MODE_NORMAL == mScreenMode) {
             mVideoPlayer.fullScreen();
         } else if (VideoPlayView.MODE_FULL_SCREEN == mScreenMode) {
