@@ -42,6 +42,7 @@ public class VideoPlayView extends RelativeLayout implements VideoContract.Video
     private FrameLayout mContainer;
 
     private boolean mIsStarted;
+    private boolean mIsNetVideo;
 
     public VideoPlayView(Context context) {
         super(context);
@@ -146,12 +147,12 @@ public class VideoPlayView extends RelativeLayout implements VideoContract.Video
     private void initPlayer() {
         Log.d(TAG, "initPlayer: ");
         mMediaPlayer = new MediaPlayer();
-        setMediaListener();
+        setPlayerListener();
         mPlayControl.setVideoPlayer(VideoPlayView.this);
     }
 
 
-    private void setMediaListener() {
+    private void setPlayerListener() {
         //播放完监听
         mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -194,10 +195,12 @@ public class VideoPlayView extends RelativeLayout implements VideoContract.Video
             @Override
             public void onSeekComplete(MediaPlayer mp) {
                 Log.d(TAG, "onSeekComplete: " + mMediaPlayer.getCurrentPosition() + "  /  " + mMediaPlayer.getDuration());
+
                 if (mMediaPlayer.getDuration() == 0) {
                     onPlayError();
                     return;
                 }
+                mPlayControl.showProgress();
             }
         });
     }
@@ -210,7 +213,6 @@ public class VideoPlayView extends RelativeLayout implements VideoContract.Video
     @Override
     public void play() {
         mMediaPlayer.start();
-        // showProgress();
     }
 
     @Override
@@ -300,8 +302,8 @@ public class VideoPlayView extends RelativeLayout implements VideoContract.Video
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return mPlayControl.onTouchEvent(event);
-       // Log.d(TAG, "onTouchEvent: ");
-       // return super.onTouchEvent(event);
+        // Log.d(TAG, "onTouchEvent: ");
+        // return super.onTouchEvent(event);
     }
 
     @Override
@@ -342,5 +344,15 @@ public class VideoPlayView extends RelativeLayout implements VideoContract.Video
     @Override
     public boolean isStarted() {
         return mIsStarted;
+    }
+
+
+    public void setIsNetVideo(boolean isNetVideo) {
+        mIsNetVideo = isNetVideo;
+    }
+
+    @Override
+    public boolean isNetVideo() {
+        return mIsNetVideo;
     }
 }

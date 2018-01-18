@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- tools:showIn="@layout/video_play_view"-->
-
     <ImageView
         android:id="@+id/video_img"
         android:layout_width="match_parent"
@@ -37,8 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:layout_marginStart="10dp"
-            android:src="@drawable/ic_player_pause"
-            android:visibility="gone" />
+            android:src="@drawable/ic_player_pause" />
 
         <TextView
             android:id="@+id/progress_view"

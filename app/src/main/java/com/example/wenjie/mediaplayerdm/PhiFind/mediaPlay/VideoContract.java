@@ -4,6 +4,7 @@ package com.example.wenjie.mediaplayerdm.PhiFind.mediaPlay;
 public interface VideoContract {
 
     interface VideoControl {
+        void startPlay();
         void onPlayerStart();
         void setVideoPlayer(VideoContract.VideoPlayer mediaPlayer);
         void setScreenMode(int screenMode);
@@ -11,6 +12,7 @@ public interface VideoContract {
         void dismiss();
         void setImage(String uri);
         void setTitle(String title);
+        void showProgress();
     }
 
     interface VideoPlayer {
@@ -25,6 +27,7 @@ public interface VideoContract {
         int getCurrentPosition();
         boolean isPlaying();
         boolean isStarted();
+        boolean isNetVideo();
     }
 
 

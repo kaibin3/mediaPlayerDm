@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 
 import com.example.wenjie.mediaplayerdm.R;
 import com.example.wenjie.mediaplayerdm.util.AnimationUtils;
+import com.example.wenjie.mediaplayerdm.util.ToastUtils;
 
 
 public abstract class VideoPlayAbsControl extends FrameLayout implements VideoContract.VideoControl {
@@ -22,6 +24,10 @@ public abstract class VideoPlayAbsControl extends FrameLayout implements VideoCo
     protected Context mContext;
     protected ViewGroup mContainer;
     protected LinearLayout mLoadingView;
+
+    protected View mMobileNetworkLayout;
+    protected View mContinuePlayView;
+
 
     public VideoPlayAbsControl(@NonNull Context context) {
         super(context);
@@ -31,6 +37,11 @@ public abstract class VideoPlayAbsControl extends FrameLayout implements VideoCo
     public VideoPlayAbsControl(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
+    }
+
+    @Override
+    public void startPlay() {
+
     }
 
     @Override
@@ -88,14 +99,52 @@ public abstract class VideoPlayAbsControl extends FrameLayout implements VideoCo
         }
     }
 
-
-    public void showWifiTips() {
-
+    protected void showNoNetwork() {
+        ToastUtils.toastShow(mContext.getResources().getString(R.string.please_check_net));
     }
 
 
+    public void showOnMobileNetwork() {
+
+        /*LinearLayout layout = new LinearLayout(getContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setBackgroundColor(Color.parseColor("#FF000000"));
+
+        LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams1.gravity = Gravity.CENTER_HORIZONTAL;
+
+        TextView textView = new TextView(mContext);
+        textView.setTextSize(11);
+        textView.setTextColor(Color.WHITE);
+        textView.setText("在非Wi-Fi网络观看，将消耗流量");
+        layout.addView(textView, layoutParams1);
+        TextView keepOn = new TextView(mContext);
+        keepOn.setTextSize(13);
+        keepOn.setTextColor(Color.WHITE);
+        keepOn.setText("继续播放");
+        keepOn.setBackground(mContext.getResources().getDrawable(R.drawable.text_bg));
+        layout.addView(keepOn, layoutParams1);
+
+        FrameLayout.LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        layoutParams.gravity = Gravity.CENTER;
+        addView(layout, layoutParams);*/
+        mMobileNetworkLayout = LayoutInflater.from(mContext).inflate(R.layout.on_mobile_network, this, false);
+        mContinuePlayView = mMobileNetworkLayout.findViewById(R.id.continue_play_view);
+        mContinuePlayView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ignoreMobileNetwork();
+            }
+        });
+        FrameLayout.LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        addView(mMobileNetworkLayout, layoutParams);
+    }
 
 
+    public void ignoreMobileNetwork() {
+        removeView(mMobileNetworkLayout);
+        startPlay();
+    }
 
 
  /*   public abstract void onPlayStart();
@@ -128,7 +177,7 @@ public abstract class VideoPlayAbsControl extends FrameLayout implements VideoCo
     public abstract void showNetError();*/
 
 
-    public void dismiss1() {
+    public void dismissAlpha() {
         //ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mPlayControlView, "alpha", 1f, 0f);
         //objectAnimator.start();
         AlphaAnimation alphaAnimation = new AlphaAnimation(1f, 0f);

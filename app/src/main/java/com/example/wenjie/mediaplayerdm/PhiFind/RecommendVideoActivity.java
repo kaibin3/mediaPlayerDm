@@ -67,6 +67,7 @@ public class RecommendVideoActivity extends Activity implements FindVideoContrac
     public void upDate(FindVideoEntry videoEntry) {
         videoPlayView.setImage(videoEntry.getPhotoUri());
         videoPlayView.setVideoUri(videoEntry.getVideoUri());
+        videoPlayView.setIsNetVideo(true);
         mAdapter.setData(videoEntry.getRecommendInfo());
     }
 }

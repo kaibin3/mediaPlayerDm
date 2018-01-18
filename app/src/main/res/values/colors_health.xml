@@ -154,4 +154,6 @@
 
     <color name="find_list_divider">#b6b6b6</color>
 
+    <color name="play_image_bg">#2d181818</color>
+
 </resources>
