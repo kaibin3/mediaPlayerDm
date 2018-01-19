@@ -29,7 +29,7 @@ import java.io.OutputStream;
  */
 
 public class TextureViewMediaDmActivity extends Activity {
-
+    private static final String TAG = "TextureViewMediaDmActiv";
     private TextureView mTextureView;
     private MediaPlayer mMediaPlayer;
     private Surface mSurface;
@@ -79,14 +79,14 @@ public class TextureViewMediaDmActivity extends Activity {
             System.out.println("onSurfaceTextureDestroyed onSurfaceTextureDestroyed");
             surfaceTexture = null;
             mSurface = null;
-            mMediaPlayer.stop();
-            mMediaPlayer.release();
+            if (null != mMediaPlayer) mMediaPlayer.stop();
+            if (null != mMediaPlayer) mMediaPlayer.release();
             return true;
         }
 
         @Override
         public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
-//      System.out.println("onSurfaceTextureUpdated onSurfaceTextureUpdated");
+            System.out.println("onSurfaceTextureUpdated onSurfaceTextureUpdated");
         }
     };
 
@@ -94,6 +94,8 @@ public class TextureViewMediaDmActivity extends Activity {
     private class PlayerVideo extends Thread {
         @Override
         public void run() {
+            Log.d(TAG, "PlayThread Thread: " + Thread.currentThread().getId() + " " + Thread.currentThread().getName());
+
             try {
               /*  File file = new File(Environment.getExternalStorageDirectory() + "/ansen.mp4");
                 if (!file.exists()) {//文件不存在
@@ -109,7 +111,8 @@ public class TextureViewMediaDmActivity extends Activity {
                 mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
-                        // videoImage.setVisibility(View.GONE);
+                        Log.d(TAG, "PlayThread Thread: " + Thread.currentThread().getId() + " " + Thread.currentThread().getName());
+                        videoImage.setVisibility(View.GONE);
                         mMediaPlayer.start();
                     }
                 });
