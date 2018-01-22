@@ -6,11 +6,11 @@ import java.util.List;
  * Created by wen.jie on 2018/1/4.
  */
 
-public class FindVideoEntry {
+public class RecommendVideoEntry {
 
     private String photoUri;
     private String videoUri;
-    private List<FindCardInfo> recommendInfo;
+    private List<VideoCardInfo> recommendInfo;
     //private VideoPlayView.VideoPlayInfo mediaInfo;
 
     public String getPhotoUri() {
@@ -29,11 +29,11 @@ public class FindVideoEntry {
         this.videoUri = videoUri;
     }
 
-    public List<FindCardInfo> getRecommendInfo() {
+    public List<VideoCardInfo> getRecommendInfo() {
         return recommendInfo;
     }
 
-    public void setRecommendInfo(List<FindCardInfo> findCardInfos) {
+    public void setRecommendInfo(List<VideoCardInfo> findCardInfos) {
         this.recommendInfo = findCardInfos;
     }
 

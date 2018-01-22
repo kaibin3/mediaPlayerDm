@@ -1,7 +1,7 @@
 package com.example.wenjie.mediaplayerdm.PhiFind.entry;
 
 
-public class FindCardInfo {
+public class VideoCardInfo {
 
     private TYPE type;
     private String photoUrl;

@@ -1,4 +1,4 @@
-package com.example.wenjie.mediaplayerdm.PhiFind.mediaPlay;
+package com.example.wenjie.mediaplayerdm.PhiFind.videoplay;
 
 import android.content.Context;
 import android.os.Handler;
@@ -293,4 +293,9 @@ public class VideoPlayControlView extends VideoPlayAbsControl implements View.On
     }
 
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mHandler.removeCallbacksAndMessages(null);
+    }
 }

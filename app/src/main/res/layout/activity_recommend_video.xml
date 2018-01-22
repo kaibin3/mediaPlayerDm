@@ -10,7 +10,7 @@
 
     <include layout="@layout/title_bar" />
 
-    <com.example.wenjie.mediaplayerdm.PhiFind.mediaPlay.VideoPlayView
+    <com.example.wenjie.mediaplayerdm.PhiFind.videoplay.VideoPlayView
         android:id="@+id/video_play_view"
         android:layout_width="match_parent"
         android:layout_height="200dp" />
@@ -33,14 +33,14 @@
                 android:textColor="@color/back_color"
                 android:textSize="14sp" />
 
-            <com.example.wenjie.mediaplayerdm.ui.widget.NoScrollListView
-                android:id="@+id/recommend_list_view"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/video_rlv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="@drawable/list_divider"
+                android:divider="@drawable/video_list_divider"
                 android:dividerHeight="1dp"
                 android:listSelector="@color/transparent"
-                tools:listitem="@layout/item_recommend_card" />
+                tools:listitem="@layout/item_video_recommend" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

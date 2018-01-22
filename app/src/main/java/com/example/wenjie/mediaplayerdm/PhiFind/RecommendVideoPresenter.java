@@ -1,7 +1,7 @@
 package com.example.wenjie.mediaplayerdm.PhiFind;
 
-import com.example.wenjie.mediaplayerdm.PhiFind.entry.FindCardInfo;
-import com.example.wenjie.mediaplayerdm.PhiFind.entry.FindVideoEntry;
+import com.example.wenjie.mediaplayerdm.PhiFind.entry.VideoCardInfo;
+import com.example.wenjie.mediaplayerdm.PhiFind.entry.RecommendVideoEntry;
 import com.example.wenjie.mediaplayerdm.util.Constants;
 
 import java.util.ArrayList;
@@ -11,18 +11,18 @@ import java.util.List;
  * Created by wen.jie on 2018/1/3.
  */
 
-public class FindVideoPresenter implements FindVideoContract.Presenter {
+public class RecommendVideoPresenter implements RecommendVideoContract.Presenter {
 
-    private FindVideoContract.View mView;
+    private RecommendVideoContract.View mView;
 
-    public FindVideoPresenter(FindVideoContract.View view) {
+    public RecommendVideoPresenter(RecommendVideoContract.View view) {
         mView = view;
     }
 
 
     @Override
     public void loadInfo(String id) {
-        FindVideoEntry entry = new FindVideoEntry();
+        RecommendVideoEntry entry = new RecommendVideoEntry();
 
        /* VideoPlayView.VideoPlayInfo mediaInfo = new VideoPlayView.VideoPlayInfo();
         mediaInfo.setPhotoUri(Constants.baiduPhotoUrl);
@@ -31,9 +31,9 @@ public class FindVideoPresenter implements FindVideoContract.Presenter {
         entry.setPhotoUri(Constants.baiduPhotoUrl);
         entry.setVideoUri(Constants.localVideoUrl2);
 
-        List<FindCardInfo> findCardInfos = new ArrayList<>();
+        List<VideoCardInfo> findCardInfos = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            FindCardInfo findCardInfo = new FindCardInfo();
+            VideoCardInfo findCardInfo = new VideoCardInfo();
             findCardInfo.setVideoUrl(Constants.phiVideoUrl2);
             findCardInfo.setPhotoUrl(Constants.hao123photoUrl);
             findCardInfo.setDescription("徒手胸肌初级训练");

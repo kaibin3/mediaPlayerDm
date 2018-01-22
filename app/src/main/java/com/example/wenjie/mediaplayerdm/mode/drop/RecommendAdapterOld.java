@@ -1,4 +1,4 @@
-package com.example.wenjie.mediaplayerdm.PhiFind;
+package com.example.wenjie.mediaplayerdm.mode.drop;
 
 
 import android.content.Context;
@@ -12,24 +12,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.wenjie.mediaplayerdm.PhiFind.entry.FindCardInfo;
+import com.example.wenjie.mediaplayerdm.PhiFind.entry.VideoCardInfo;
 import com.example.wenjie.mediaplayerdm.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecommendAdapter extends BaseAdapter {
+public class RecommendAdapterOld extends BaseAdapter {
     private static final String TAG = "RecommendAdapter";
     private Context context;
-    private List<FindCardInfo> mCards = new ArrayList<>();
+    private List<VideoCardInfo> mCards = new ArrayList<>();
     private LayoutInflater mLayoutInflater;
 
-    public RecommendAdapter(Context context) {
+    public RecommendAdapterOld(Context context) {
         this.context = context;
         mLayoutInflater = LayoutInflater.from(context);
     }
 
-    public void setData(List<FindCardInfo> cards) {
+    public void setData(List<VideoCardInfo> cards) {
         if (null != cards) {
             mCards.clear();
             mCards.addAll(cards);
@@ -45,7 +45,7 @@ public class RecommendAdapter extends BaseAdapter {
     }
 
     @Override
-    public FindCardInfo getItem(int position) {
+    public VideoCardInfo getItem(int position) {
         return mCards.get(position);
     }
 
@@ -58,18 +58,18 @@ public class RecommendAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (null == convertView) {
-            convertView = mLayoutInflater.inflate(R.layout.item_recommend_card, parent, false);
+            convertView = mLayoutInflater.inflate(R.layout.item_video_recommend, parent, false);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        final FindCardInfo findCardInfo = mCards.get(position);
+        final VideoCardInfo findCardInfo = mCards.get(position);
         bindView(findCardInfo, viewHolder);
         return convertView;
     }
 
-    private void bindView(FindCardInfo findCardInfo, ViewHolder holder) {
+    private void bindView(VideoCardInfo findCardInfo, ViewHolder holder) {
         Log.d(TAG, "bindView: " + findCardInfo);
         if (!TextUtils.isEmpty(findCardInfo.getDescription())) {
             holder.textView1.setText(findCardInfo.getDescription());
