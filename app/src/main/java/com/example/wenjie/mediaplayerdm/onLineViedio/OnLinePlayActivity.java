@@ -33,7 +33,7 @@ public class OnLinePlayActivity extends AppCompatActivity {
         WindowUtils.requestFullScreen(this);
         setContentView(R.layout.activity_on_line_play);
 
-        addFragment(onLinePlayFragment);
+        addFragment(new OnLinePlayFragment());
         // addFragment(new VideoFragment());
 
         ButterKnife.bind(this);

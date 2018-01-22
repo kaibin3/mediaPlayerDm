@@ -13,6 +13,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -40,7 +42,10 @@ public class OnLinePlayFragment extends Fragment {
     TextView currentTimeView;
     @BindView(R.id.end_time)
     TextView endTimeView;
-
+    @BindView(R.id.play_btn)
+    Button playBtn;
+    @BindView(R.id.image_view)
+    ImageView imageView;
 
     private MediaPlayer mMediaPlayer;
     private SurfaceHolder mSurfaceHolder;
@@ -114,12 +119,32 @@ public class OnLinePlayFragment extends Fragment {
             e.printStackTrace();
         }
 
+        mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                imageView.setVisibility(View.GONE);
+            }
+        });
+
         mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
+                Log.d(TAG, "onCompletion: ");
 
             }
         });
+    }
+
+    @OnClick(R.id.play_btn)
+    void play() {
+        try {
+            if (!mMediaPlayer.isPlaying()){
+                mMediaPlayer.prepare();
+                mMediaPlayer.start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
