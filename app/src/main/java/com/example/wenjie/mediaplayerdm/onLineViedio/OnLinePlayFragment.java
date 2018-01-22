@@ -112,8 +112,8 @@ public class OnLinePlayFragment extends Fragment {
         Uri uri = Uri.parse(videoUrl2);
         try {
             mMediaPlayer.setDataSource(uri.toString());
-            mMediaPlayer.prepare();
-            mMediaPlayer.start();
+          //  mMediaPlayer.prepare();
+          //  mMediaPlayer.start();
         } catch (IOException e) {
             Log.d(TAG, "configSurfaceCreated: " + e);
             e.printStackTrace();
@@ -122,7 +122,14 @@ public class OnLinePlayFragment extends Fragment {
         mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                imageView.setVisibility(View.GONE);
+                mMediaPlayer.start();
+                mFragmentView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        imageView.setVisibility(View.GONE);
+                    }
+                },100);//延迟100ms消失 避免黑屏
+
             }
         });
 
@@ -139,10 +146,10 @@ public class OnLinePlayFragment extends Fragment {
     void play() {
         try {
             if (!mMediaPlayer.isPlaying()){
-                mMediaPlayer.prepare();
-                mMediaPlayer.start();
+                mMediaPlayer.prepareAsync();
+
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

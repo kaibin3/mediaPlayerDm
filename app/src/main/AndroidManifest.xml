@@ -41,8 +41,8 @@
 
         </activity>
         <activity android:name=".PhiFind.FindVideoActivity"></activity>
-        <activity android:name=".netDm.VideoSurfaceDemo" />
-        <activity android:name=".apiGuide.LiveCameraActivity" />
+        <activity android:name=".apidm.VideoSurfaceDemo" />
+        <activity android:name=".apidm.LiveCameraActivity" />
     </application>
 
 

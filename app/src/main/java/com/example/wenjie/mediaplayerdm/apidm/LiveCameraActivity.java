@@ -1,4 +1,4 @@
-package com.example.wenjie.mediaplayerdm.apiGuide;
+package com.example.wenjie.mediaplayerdm.apidm;
 
 import android.app.Activity;
 import android.graphics.SurfaceTexture;

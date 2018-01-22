@@ -1,4 +1,4 @@
-package com.example.wenjie.mediaplayerdm.netDm;
+package com.example.wenjie.mediaplayerdm.apidm;
 
 /**
  * Created by wen.jie on 2018/1/11.
