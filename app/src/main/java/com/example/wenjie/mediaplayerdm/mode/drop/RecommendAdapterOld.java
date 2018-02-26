@@ -93,9 +93,9 @@ public class RecommendAdapterOld extends BaseAdapter {
 
         public ViewHolder(View view) {
             itemView = view;
-            imageView = view.findViewById(R.id.previous_img);
-            textView1 = view.findViewById(R.id.description_text);
-            textView2 = view.findViewById(R.id.label_text);
+            imageView = view.findViewById(R.id.image_view);
+            textView1 = view.findViewById(R.id.title);
+            textView2 = view.findViewById(R.id.tag);
         }
     }
 

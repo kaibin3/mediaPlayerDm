@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.example.wenjie.mediaplayerdm.PhiFind.RecommendVideoActivity">
+    tools:context=".PhiFind.RecommendVideoActivity">
 
     <include layout="@layout/title_bar" />
 
@@ -16,6 +16,7 @@
         android:layout_height="200dp" />
 
     <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none">
@@ -25,22 +26,33 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/divider_color" />
+
             <TextView
+                android:id="@+id/recommend_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
                 android:text="相关推荐"
-                android:textColor="@color/back_color"
-                android:textSize="14sp" />
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:visibility="invisible" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/video_rlv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="@drawable/video_list_divider"
-                android:dividerHeight="1dp"
                 android:listSelector="@color/transparent"
                 tools:listitem="@layout/item_video_recommend" />
         </LinearLayout>
     </ScrollView>
+
+    <include
+        android:id="@+id/no_network_layout"
+        layout="@layout/video_no_network_layout"
+        android:visibility="gone" />
 </LinearLayout>

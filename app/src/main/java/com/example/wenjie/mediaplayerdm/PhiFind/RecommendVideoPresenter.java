@@ -1,6 +1,5 @@
 package com.example.wenjie.mediaplayerdm.PhiFind;
 
-import com.example.wenjie.mediaplayerdm.PhiFind.entry.VideoCardInfo;
 import com.example.wenjie.mediaplayerdm.PhiFind.entry.RecommendVideoEntry;
 import com.example.wenjie.mediaplayerdm.util.Constants;
 
@@ -31,16 +30,16 @@ public class RecommendVideoPresenter implements RecommendVideoContract.Presenter
         entry.setPhotoUri(Constants.baiduPhotoUrl);
         entry.setVideoUri(Constants.localVideoUrl2);
 
-        List<VideoCardInfo> findCardInfos = new ArrayList<>();
+        List<RecommendVideoEntry.CardData> findCardInfos = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            VideoCardInfo findCardInfo = new VideoCardInfo();
-            findCardInfo.setVideoUrl(Constants.phiVideoUrl2);
-            findCardInfo.setPhotoUrl(Constants.hao123photoUrl);
-            findCardInfo.setDescription("徒手胸肌初级训练");
-            findCardInfo.setLabel("健身训练");
+            RecommendVideoEntry.CardData findCardInfo = new RecommendVideoEntry.CardData();
+            findCardInfo.setUrl(Constants.phiVideoUrl2);
+            findCardInfo.setPictureUrl(Constants.hao123photoUrl);
+            findCardInfo.setTitle("徒手胸肌初级训练");
+            findCardInfo.setTags("健身训练");
             findCardInfos.add(findCardInfo);
         }
-        entry.setRecommendInfo(findCardInfos);
+        entry.setRecommendCards(findCardInfos);
 
         mView.upDate(entry);
     }

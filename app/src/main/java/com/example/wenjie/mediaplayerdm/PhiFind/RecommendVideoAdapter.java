@@ -2,35 +2,33 @@ package com.example.wenjie.mediaplayerdm.PhiFind;
 
 
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.example.wenjie.mediaplayerdm.PhiFind.entry.VideoCardInfo;
+import com.example.wenjie.mediaplayerdm.PhiFind.entry.RecommendVideoEntry;
 import com.example.wenjie.mediaplayerdm.R;
 
 import java.util.List;
 
-public class RecommendVideoAdapter extends BaseQuickAdapter<VideoCardInfo, BaseViewHolder> {
-    private static final String TAG = "RecommendAdapter";
+public class RecommendVideoAdapter extends BaseQuickAdapter<RecommendVideoEntry.CardData, BaseViewHolder> {
+    private static final String TAG = "RecommendVideoAdapter";
 
-    public RecommendVideoAdapter(int layoutResId, @Nullable List<VideoCardInfo> data) {
+    public RecommendVideoAdapter(int layoutResId, @Nullable List<RecommendVideoEntry.CardData> data) {
         super(R.layout.item_video_recommend, data);
-        Log.d(TAG, "RecommendAdapterNew: ");
     }
 
-
     @Override
-    protected void convert(BaseViewHolder helper, VideoCardInfo findCardInfo) {
-        Log.d(TAG, "bindView: " + findCardInfo);
-        helper.setText(R.id.description_text, findCardInfo.getDescription());
-        helper.setText(R.id.label_text, findCardInfo.getLabel());
-        ImageView imageView = helper.getView(R.id.previous_img);
+    protected void convert(BaseViewHolder helper, RecommendVideoEntry.CardData cardData) {
+        helper.setText(R.id.title, cardData.getTitle());
+        helper.setText(R.id.tag, "# " + cardData.getTags());
+        ImageView imageView = helper.getView(R.id.image_view);
 
-        Glide.with(mContext).load(findCardInfo.getPhotoUrl()).into(imageView);
-
+        Glide.with(mContext)
+                .load(cardData.getPictureUrl())
+                .placeholder(R.drawable.discover_video_bg_loading_related)
+                .into(imageView);
     }
 
 }

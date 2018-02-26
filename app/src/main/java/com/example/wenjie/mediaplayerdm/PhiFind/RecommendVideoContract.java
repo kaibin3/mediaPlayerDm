@@ -1,5 +1,7 @@
 package com.example.wenjie.mediaplayerdm.PhiFind;
 
+import android.content.Context;
+
 import com.example.wenjie.mediaplayerdm.PhiFind.entry.RecommendVideoEntry;
 
 /**
@@ -8,11 +10,16 @@ import com.example.wenjie.mediaplayerdm.PhiFind.entry.RecommendVideoEntry;
 
 public interface RecommendVideoContract {
 
+
+
+
     interface Presenter {
         void loadInfo(String id);
     }
 
     interface View {
         void upDate(RecommendVideoEntry videoEntry);
+        Context getContext();
+        void showNoNetwork();
     }
 }

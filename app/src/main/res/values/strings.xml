@@ -40,10 +40,12 @@
 
     <string name="please_check_net">请检查你的网络连接...</string>
     <string name="empty_null"></string>
-
+    <string name="need_permission">请允许相关权限才能进行相关操作</string>
+    <string name="please_grant_app_permission">请到设置里授权该APP相关权限，否则无法使用。</string>
 
 
     <string name="no_network_layout">网络好像开小差了~</string>
     <string name="no_network_reload">重新加载</string>
+    <string name="settings">设置</string>
 
 </resources>
