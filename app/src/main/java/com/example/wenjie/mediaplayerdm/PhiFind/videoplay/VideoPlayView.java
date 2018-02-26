@@ -17,8 +17,6 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.example.wenjie.mediaplayerdm.util.WindowUtils;
-
 import java.io.IOException;
 
 
@@ -234,6 +232,9 @@ public class VideoPlayView extends RelativeLayout implements VideoContract.Video
                 mMediaPlayer.start();
                 mPlayControl.onPlayerStart();
                 mIsStarted = true;
+
+               // Log.d(TAG, "onPrepared: "+mp.getDrmInfo().);
+
             }
         });
 
@@ -251,9 +252,9 @@ public class VideoPlayView extends RelativeLayout implements VideoContract.Video
     public void fullScreen() {
         Toast.makeText(getContext(), "全屏", Toast.LENGTH_SHORT).show();
         Activity activity = NiceUtil.scanForActivity(mContext);
+        NiceUtil.hideBottomUIMenu(activity);
         NiceUtil.hideActionBar(mContext);
-        WindowUtils.hideBottomUIMenu(activity);
-        WindowUtils.setOrientationLand(activity);
+        NiceUtil.setOrientationLand(activity);
 
         ViewGroup contentView = activity.findViewById(android.R.id.content);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -268,7 +269,7 @@ public class VideoPlayView extends RelativeLayout implements VideoContract.Video
     public void exitFullScreen() {
         Toast.makeText(getContext(), "退出全屏", Toast.LENGTH_SHORT).show();
         Activity activity = NiceUtil.scanForActivity(mContext);
-        WindowUtils.setOrientationPort(activity);
+        NiceUtil.setOrientationPort(activity);
 
 
         ViewGroup contentView = NiceUtil.scanForActivity(mContext).findViewById(android.R.id.content);

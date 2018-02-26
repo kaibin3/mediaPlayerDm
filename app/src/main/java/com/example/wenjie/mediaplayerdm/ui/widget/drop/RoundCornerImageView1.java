@@ -34,7 +34,7 @@ import android.widget.ImageView;
  */
 //可用
 @SuppressLint("AppCompatCustomView")
-public class CornerImageView1 extends ImageView {
+public class RoundCornerImageView1 extends ImageView {
 
 
     //圆角大小，默认为10
@@ -48,15 +48,15 @@ public class CornerImageView1 extends ImageView {
     //渲染图像，使用图像为绘制图形着色
     private BitmapShader mBitmapShader;
 
-    public CornerImageView1(Context context) {
+    public RoundCornerImageView1(Context context) {
         this(context, null);
     }
 
-    public CornerImageView1(Context context, AttributeSet attrs) {
+    public RoundCornerImageView1(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CornerImageView1(Context context, AttributeSet attrs, int defStyleAttr) {
+    public RoundCornerImageView1(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         mMatrix = new Matrix();

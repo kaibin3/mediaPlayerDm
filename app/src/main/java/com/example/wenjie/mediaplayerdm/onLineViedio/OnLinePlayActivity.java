@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import com.example.wenjie.mediaplayerdm.R;
-import com.example.wenjie.mediaplayerdm.util.WindowUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,11 +29,11 @@ public class OnLinePlayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: ");
-        WindowUtils.requestFullScreen(this);
+      //  NiceUtil.requestFullScreen(this);
         setContentView(R.layout.activity_on_line_play);
 
-        addFragment(onLinePlayFragment);
-        // addFragment(new VideoFragment());
+       // addFragment(onLinePlayFragment);
+         addFragment(new VideoFragment());
 
         ButterKnife.bind(this);
     }
@@ -53,9 +52,9 @@ public class OnLinePlayActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && WindowUtils.isOrientationLand(this)) {
+       /* if (keyCode == KeyEvent.KEYCODE_BACK && w.isOrientationLand(this)) {
             return onLinePlayFragment.onKeyBack();
-        }
+        }*/
         return super.onKeyDown(keyCode, event);
     }
 

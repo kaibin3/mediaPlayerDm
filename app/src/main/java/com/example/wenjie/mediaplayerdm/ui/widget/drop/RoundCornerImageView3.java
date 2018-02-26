@@ -25,20 +25,20 @@ import android.widget.ImageView;
  */
 //不稳定 有锯齿
 @SuppressLint("AppCompatCustomView")
-public class CornerImageView3 extends ImageView {
+public class RoundCornerImageView3 extends ImageView {
 
     float width, height;
     private int cornerRadius = 100;
 
-    public CornerImageView3(Context context) {
+    public RoundCornerImageView3(Context context) {
         this(context, null);
     }
 
-    public CornerImageView3(Context context, AttributeSet attrs) {
+    public RoundCornerImageView3(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CornerImageView3(Context context, AttributeSet attrs, int defStyleAttr) {
+    public RoundCornerImageView3(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         if (Build.VERSION.SDK_INT < 18) {
             setLayerType(View.LAYER_TYPE_SOFTWARE, null);//关闭单个view的硬件加速

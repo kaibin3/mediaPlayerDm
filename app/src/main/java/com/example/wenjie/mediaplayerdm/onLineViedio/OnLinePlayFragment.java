@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.example.wenjie.mediaplayerdm.R;
 import com.example.wenjie.mediaplayerdm.util.Constants;
-import com.example.wenjie.mediaplayerdm.util.WindowUtils;
 
 import java.io.IOException;
 
@@ -130,10 +129,10 @@ public class OnLinePlayFragment extends Fragment {
     }
 
     public boolean onKeyBack() {
-        if (WindowUtils.isOrientationLand(getActivity())) {
+        /*if (WindowUtils.isOrientationLand(getActivity())) {
             WindowUtils.setOrientationPort(getActivity());
             mFullScreenImg.setImageDrawable(getResources().getDrawable(R.drawable.little_screen));
-        }
+        }*/
         return true;
     }
 

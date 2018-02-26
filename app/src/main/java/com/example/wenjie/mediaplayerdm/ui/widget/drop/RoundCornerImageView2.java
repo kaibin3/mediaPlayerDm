@@ -37,21 +37,21 @@ import android.widget.ImageView;
  */
 //可用
 @SuppressLint("AppCompatCustomView")
-public class CornerImageView2 extends ImageView {
+public class RoundCornerImageView2 extends ImageView {
 
     private Paint mPaint;
     private Xfermode mXfermode;
     private int mBorderRadius = 50;
 
-    public CornerImageView2(Context context) {
+    public RoundCornerImageView2(Context context) {
         this(context, null);
     }
 
-    public CornerImageView2(Context context, AttributeSet attrs) {
+    public RoundCornerImageView2(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CornerImageView2(Context context, AttributeSet attrs, int defStyleAttr) {
+    public RoundCornerImageView2(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         mPaint = new Paint();

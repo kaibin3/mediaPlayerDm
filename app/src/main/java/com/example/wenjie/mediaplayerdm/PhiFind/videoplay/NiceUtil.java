@@ -1,16 +1,19 @@
 package com.example.wenjie.mediaplayerdm.PhiFind.videoplay;
 
+import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
-
-import com.example.wenjie.mediaplayerdm.util.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 
 import java.util.Formatter;
 import java.util.Locale;
@@ -52,6 +55,7 @@ public class NiceUtil {
         return null;
     }
 
+    @SuppressLint("RestrictedApi")
     public static void showActionBar(Context context) {
         ActionBar ab = getAppCompActivity(context).getSupportActionBar();
         if (ab != null) {
@@ -64,11 +68,6 @@ public class NiceUtil {
     }
 
     public static void hideActionBar(Context context) {
-        /*ActionBar ab = getAppCompActivity(context).getSupportActionBar();
-        if (ab != null) {
-            ab.setShowHideAnimationEnabled(false);
-            ab.hide();
-        }*/
         scanForActivity(context)
                 .getWindow()
                 .setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -175,9 +174,61 @@ public class NiceUtil {
     }
 
 
-    public static void rotationAnim(View view) {
-        AnimationUtils.rotationAnim(view);
-
+    public static void rotationAnimator(View view) {
+        ObjectAnimator rotation = ObjectAnimator.ofFloat(view, "rotation", 0f, 359f);//最好是0f到359f，0f和360f的位置是重复的
+        rotation.setRepeatCount(ObjectAnimator.INFINITE);
+        rotation.setInterpolator(new LinearInterpolator());
+        rotation.setDuration(500);
+        rotation.start();
     }
+
+
+    /**
+     * 隐藏虚拟按键，并且全屏 (可用)
+     */
+    public static void hideBottomUIMenu(Activity activity) {
+        //隐藏虚拟按键，并且全屏
+        if (Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) { // lower api
+            View v = activity.getWindow().getDecorView();
+            v.setSystemUiVisibility(View.GONE);
+        } else if (Build.VERSION.SDK_INT >= 19) {
+            //for new api versions.
+            View decorView = activity.getWindow().getDecorView();
+            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN;
+            decorView.setSystemUiVisibility(uiOptions);
+        }
+    }
+
+
+    private static void hideActionBar(Activity activity) {
+        //隐藏actionBar
+        if (activity instanceof AppCompatActivity) {
+            android.support.v7.app.ActionBar supportActionBar = ((AppCompatActivity) activity).getSupportActionBar();
+            if (supportActionBar != null) {
+                supportActionBar.hide();
+            }
+        } else {
+            android.app.ActionBar actionBar = activity.getActionBar();
+            if (actionBar != null) {
+                actionBar.hide();
+            }
+        }
+    }
+
+    /**
+     * 横屏
+     */
+    public static void setOrientationLand(Activity activity) {
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    }
+
+    /**
+     * 竖屏
+     */
+    public static void setOrientationPort(Activity activity) {
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
 
 }
