@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -57,10 +59,14 @@ public class NiceUtil {
 
     @SuppressLint("RestrictedApi")
     public static void showActionBar(Context context) {
-        ActionBar ab = getAppCompActivity(context).getSupportActionBar();
-        if (ab != null) {
-            ab.setShowHideAnimationEnabled(false);
-            ab.show();
+        try {
+            ActionBar ab = getAppCompActivity(context).getSupportActionBar();
+            if (ab != null) {
+                ab.setShowHideAnimationEnabled(false);
+                ab.show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         scanForActivity(context)
                 .getWindow()
@@ -178,13 +184,13 @@ public class NiceUtil {
         ObjectAnimator rotation = ObjectAnimator.ofFloat(view, "rotation", 0f, 359f);//最好是0f到359f，0f和360f的位置是重复的
         rotation.setRepeatCount(ObjectAnimator.INFINITE);
         rotation.setInterpolator(new LinearInterpolator());
-        rotation.setDuration(500);
+        rotation.setDuration(1000);
         rotation.start();
     }
 
 
     /**
-     * 隐藏虚拟按键，并且全屏 (可用)
+     * 隐藏虚拟按键，并且全屏
      */
     public static void hideBottomUIMenu(Activity activity) {
         //隐藏虚拟按键，并且全屏
@@ -230,5 +236,40 @@ public class NiceUtil {
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
+
+    public static boolean isNetworkAvailable(Context context) {
+        //为了防止内存泄露，添加.getApplicationContext()
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
+                .getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (connectivityManager == null) {
+            return false;
+        } else {
+            NetworkInfo[] networkInfo = connectivityManager.getAllNetworkInfo();
+
+            if (networkInfo != null && networkInfo.length > 0) {
+                for (int i = 0; i < networkInfo.length; i++) {
+                    if (networkInfo[i].getState() == NetworkInfo.State.CONNECTED) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isOnlyMobileNetworkConnect(Context context) {
+        if (context != null) {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mobileNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            if (mobileNetworkInfo != null && mobileNetworkInfo.isConnected()) {
+                if (mobileNetworkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 }

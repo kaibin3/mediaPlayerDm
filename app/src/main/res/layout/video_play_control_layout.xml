@@ -5,6 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--back-->
+    <ImageView
+        android:id="@+id/back_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/button_back"
+        android:visibility="gone" />
+
+    <!--背景-->
     <ImageView
         android:id="@+id/video_img"
         android:layout_width="match_parent"
@@ -16,8 +28,7 @@
         android:id="@+id/center_play_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/ic_player_center_start" />
+        android:layout_centerInParent="true" />
 
 
     <LinearLayout
@@ -33,23 +44,22 @@
             android:id="@+id/bottom_play_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/ic_player_pause" />
+            android:layout_marginLeft="10dp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/progress_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:text="00:00"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            tools:text="00:00" />
 
         <SeekBar
             android:id="@+id/seek_bar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
             android:layout_weight="1" />
 
         <TextView
@@ -57,17 +67,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="23:54"
-            android:textColor="@color/white" />
+            android:layout_marginRight="12dp"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            tools:text="23:54" />
 
 
         <ImageView
             android:id="@+id/full_screen_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="20dp"
-            android:src="@drawable/ic_player_enlarge" />
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginRight="12dp" />
 
     </LinearLayout>
 

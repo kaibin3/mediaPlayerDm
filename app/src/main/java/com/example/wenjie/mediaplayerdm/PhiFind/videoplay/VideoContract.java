@@ -10,9 +10,15 @@ public interface VideoContract {
         void setScreenMode(int screenMode);
         void show();
         void dismiss();
-        void setImage(String uri);
+        void setImage(String url);
         void setTitle(String title);
         void showProgress();
+        void showLoading();
+        void dismissLoading();
+        void showNoNetwork();
+        void showOnMobileNetwork();
+        void showOnError();
+        void dismissError();
     }
 
     interface VideoPlayer {
@@ -20,31 +26,19 @@ public interface VideoContract {
         void play();
         void pause();
         void seekTo(int pos);
-        void fullScreen();
-        void exitFullScreen();
-        //----------------
+        boolean fullScreen();
+        boolean exitFullScreen();
         int getDuration();
         int getCurrentPosition();
         boolean isPlaying();
         boolean isStarted();
         boolean isNetVideo();
+        boolean backPressed();
+        void resume();
+        void suspend();
+        void phoneRing();
+        void phoneIdle();
     }
 
 
-    /*
-
-      void    start();
-        void    pause();
-        int     getDuration();
-        int     getCurrentPosition();
-        void    seekTo(int pos);
-        boolean isPlaying();
-        int     getBufferPercentage();
-        boolean canPause();
-        boolean canSeekBackward();
-        boolean canSeekForward();
-
-        int     getAudioSessionId();
-
-    * */
 }

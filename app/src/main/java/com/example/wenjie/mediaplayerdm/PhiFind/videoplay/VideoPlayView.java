@@ -1,9 +1,11 @@
 package com.example.wenjie.mediaplayerdm.PhiFind.videoplay;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.SurfaceTexture;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.AttributeSet;
@@ -15,19 +17,19 @@ import android.view.TextureView;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+
+import com.example.wenjie.mediaplayerdm.util.LogUtils;
 
 import java.io.IOException;
 
 
 public class VideoPlayView extends RelativeLayout implements VideoContract.VideoPlayer {
-    private static final String TAG = "VideoPlayView";
+    private static final String TAG = "VideoPlayViewT";
     public static final int MODE_FULL_SCREEN = 11;
     public static final int MODE_NORMAL = 10;
-    private int screenMode;
+    private int mCurrentMode = MODE_NORMAL;
 
-    private String videoUri;
-    private String imageUri;
+    private String mVideoUri;
 
     private VideoPlayAbsControl mPlayControl;
 
@@ -39,8 +41,12 @@ public class VideoPlayView extends RelativeLayout implements VideoContract.Video
     private Context mContext;
     private FrameLayout mContainer;
 
+    private boolean mIsNetVideo = true;
     private boolean mIsStarted;
-    private boolean mIsNetVideo;
+    private boolean mPlaying;
+    private boolean mActive = true;
+    private boolean mNeedStart;
+    private boolean mIsPlayPhoneRing;
 
     public VideoPlayView(Context context) {
         super(context);
@@ -59,30 +65,25 @@ public class VideoPlayView extends RelativeLayout implements VideoContract.Video
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(mContainer, params);
 
+        initController();
         initTextureView();
         addTextureView();
-        mPlayControl = new VideoPlayControlView(getContext());
-        setPlayControlView(mPlayControl);
     }
 
-    public void setPlayControlView(VideoPlayAbsControl playControlView) {
-        mPlayControl = playControlView;
-        mContainer.removeView(playControlView);
+    public void initController() {
+        mPlayControl = new VideoPlayControlView(getContext());
+        mContainer.removeView(mPlayControl);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mContainer.addView(mPlayControl, params);
+        mPlayControl.setScreenMode(mCurrentMode);
     }
 
-
-    private void onPlayError() {
-        Toast.makeText(getContext(), "无法播放次视频数据", Toast.LENGTH_SHORT).show();
-        //   mPlayControlView.setProgress(progressTo);
-    }
 
     TextureView.SurfaceTextureListener mSurfaceListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
-            Log.d(TAG, "onSurfaceTextureAvailable: ");
-            if (mSurfaceTexture == null) {
+            LogUtils.d(TAG, "onSurfaceTextureAvailable: " + mSurfaceTexture);
+            if (null == mSurfaceTexture) {
                 openVideo(surfaceTexture);
             } else {
                 mTextureView.setSurfaceTexture(mSurfaceTexture);
@@ -91,41 +92,63 @@ public class VideoPlayView extends RelativeLayout implements VideoContract.Video
 
         @Override
         public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-            Log.d(TAG, "onSurfaceTextureSizeChanged: ");
+            LogUtils.d(TAG, "onSurfaceTextureSizeChanged: ");
         }
 
         @Override
         public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
-            System.out.println("onSurfaceTextureDestroyed onSurfaceTextureDestroyed");
-           /* surfaceTexture = null;
-            mSurface = null;
-            mMediaPlayer.stop();
-            mMediaPlayer.release();
-            return true;*/
-
+            LogUtils.d(TAG, "onSurfaceTextureDestroyed: ");
             return mSurfaceTexture == null;
         }
 
         @Override
         public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-            Log.d(TAG, "onSurfaceTextureUpdated: ");
 
         }
-
-        private void openVideo(SurfaceTexture surfaceTexture) {
-            mSurfaceTexture = surfaceTexture;
-            try {
-                Uri uri = Uri.parse(videoUri);
-                mMediaPlayer.setDataSource(uri.toString());
-                if (mSurface == null) mSurface = new Surface(mSurfaceTexture);
-                mMediaPlayer.setSurface(mSurface);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-
     };
+
+
+    private void saveData() {
+        mPlaying = isPlaying();
+    }
+
+
+    private void openVideo(SurfaceTexture surfaceTexture) {
+        mSurfaceTexture = surfaceTexture;
+        if (mMediaPlayer == null) {
+            mMediaPlayer = new MediaPlayer();
+            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            setPlayerListener();
+        }
+
+        if (mMediaPlayer.isPlaying()) {
+            mMediaPlayer.stop();
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+            mMediaPlayer = new MediaPlayer();
+            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            setPlayerListener();
+        }
+        mPlayControl.setVideoPlayer(VideoPlayView.this);
+        if (mSurface == null) {
+            mSurface = new Surface(mSurfaceTexture);
+        }
+        mMediaPlayer.setSurface(mSurface);
+        setDataSource();
+    }
+
+    private void setDataSource() {
+        try {
+            if (null != mVideoUri) {
+                Uri uri = Uri.parse(mVideoUri);
+                mMediaPlayer.reset();
+                mMediaPlayer.setDataSource(getContext().getApplicationContext(), uri);
+            }
+        } catch (IOException e) {
+            LogUtils.d(TAG, "setDataSource error: " + e);
+            e.printStackTrace();
+        }
+    }
 
 
     private void initTextureView() {
@@ -144,33 +167,47 @@ public class VideoPlayView extends RelativeLayout implements VideoContract.Video
 
     private void initPlayer() {
         Log.d(TAG, "initPlayer: ");
-        mMediaPlayer = new MediaPlayer();
-        setPlayerListener();
-        mPlayControl.setVideoPlayer(VideoPlayView.this);
     }
 
 
     private void setPlayerListener() {
+        mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                if (mActive) {
+                    prepareFinishVideoStart();
+                } else {
+                    mNeedStart = true;
+                }
+            }
+        });
         //播放完监听
         mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                Log.d(TAG, "onCompletion: ");
-
+                LogUtils.d(TAG, "onCompletion: ");
+                onPlayCompletion(mp);
             }
+
         });
         //视频大小改变监听
         mMediaPlayer.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
             @Override
             public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
-                Log.d(TAG, "onVideoSizeChanged() called with: mp = [" + mp + "], width = [" + width + "], height = [" + height + "]");
+
             }
         });
         //错误监听
         mMediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
-                Log.d(TAG, "onError() called with: mp = [" + mp + "], what = [" + what + "], extra = [" + extra + "]");
+                LogUtils.d(TAG, "onError() called with: mp = [" + mp + "], what = [" + what + "], extra = [" + extra + "]");
+                //出错后，从新开始播放
+                releasePlayer();
+                mPlayControl.onPlayError();
+                if (null != mSurfaceTexture) {
+                    openVideo(mSurfaceTexture);
+                }
                 return false;
             }
         });
@@ -178,7 +215,6 @@ public class VideoPlayView extends RelativeLayout implements VideoContract.Video
         mMediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
             @Override
             public boolean onInfo(MediaPlayer mp, int what, int extra) {
-                Log.d(TAG, "onInfo() called with: mp = [" + mp + "], what = [" + what + "], extra = [" + extra + "]");
                 return false;
             }
         });
@@ -186,16 +222,14 @@ public class VideoPlayView extends RelativeLayout implements VideoContract.Video
         mMediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
             @Override
             public void onBufferingUpdate(MediaPlayer mp, int percent) {
-                Log.d(TAG, "onBufferingUpdate() called with: mp = [" + mp + "], percent = [" + percent + "]");
+
             }
         });
         mMediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
             @Override
             public void onSeekComplete(MediaPlayer mp) {
-                Log.d(TAG, "onSeekComplete: " + mMediaPlayer.getCurrentPosition() + "  /  " + mMediaPlayer.getDuration());
-
                 if (mMediaPlayer.getDuration() == 0) {
-                    onPlayError();
+                    mPlayControl.onPlayError();
                     return;
                 }
                 mPlayControl.showProgress();
@@ -203,120 +237,127 @@ public class VideoPlayView extends RelativeLayout implements VideoContract.Video
         });
     }
 
+    private void prepareFinishVideoStart() {
+        Log.d(TAG, "prepareFinishVideoStart: ");
+        if (mMediaPlayer != null) {
+            mMediaPlayer.start();
+            mPlayControl.onPlayerStart();
+            mIsStarted = true;
+        }
+        mNeedStart = false;
+    }
 
-    public void stopPlay() {
-        mMediaPlayer.stop();
+    private void onPlayCompletion(MediaPlayer mp) {
+        if (null != mp) {
+            mp.stop();
+        }
+        mPlayControl.onPlayCompletion();
+        mIsStarted = false;
     }
 
     @Override
     public void play() {
-        mMediaPlayer.start();
+        if (null != mMediaPlayer) {
+            mMediaPlayer.start();
+        }
     }
 
     @Override
     public void pause() {
-        mMediaPlayer.pause();
+        if (null != mMediaPlayer && mMediaPlayer.isPlaying()) {
+            mMediaPlayer.pause();
+        }
     }
 
     @Override
     public void seekTo(int progress) {
-        mMediaPlayer.seekTo(progress);
+        if (null != mMediaPlayer) {
+            mMediaPlayer.seekTo(progress);
+        }
     }
 
     @Override
     public void startPlay() {
-        //setMediaListener();
-        mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mMediaPlayer.start();
-                mPlayControl.onPlayerStart();
-                mIsStarted = true;
-
-               // Log.d(TAG, "onPrepared: "+mp.getDrmInfo().);
-
-            }
-        });
-
-        postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mMediaPlayer.prepareAsync();
-            }
-        }, 2000);
-
-
+        try {
+            mMediaPlayer.prepareAsync();
+        } catch (Exception e) {
+            e.printStackTrace();
+            mPlayControl.onPlayError();
+            LogUtils.d(TAG, "startPlay: exception " + e);
+        }
     }
 
     @Override
-    public void fullScreen() {
-        Toast.makeText(getContext(), "全屏", Toast.LENGTH_SHORT).show();
+    public boolean fullScreen() {
         Activity activity = NiceUtil.scanForActivity(mContext);
-        NiceUtil.hideBottomUIMenu(activity);
         NiceUtil.hideActionBar(mContext);
+        NiceUtil.hideBottomUIMenu(activity);
         NiceUtil.setOrientationLand(activity);
 
-        ViewGroup contentView = activity.findViewById(android.R.id.content);
+        ViewGroup contentView = (ViewGroup) activity.findViewById(android.R.id.content);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         removeView(mContainer);
         contentView.addView(mContainer, params);
 
-        screenMode = MODE_FULL_SCREEN;
-        mPlayControl.setScreenMode(screenMode);
+        mCurrentMode = MODE_FULL_SCREEN;
+        mPlayControl.setScreenMode(mCurrentMode);
+        return true;
     }
 
     @Override
-    public void exitFullScreen() {
-        Toast.makeText(getContext(), "退出全屏", Toast.LENGTH_SHORT).show();
-        Activity activity = NiceUtil.scanForActivity(mContext);
-        NiceUtil.setOrientationPort(activity);
+    public boolean exitFullScreen() {
+        if (mCurrentMode == MODE_FULL_SCREEN) {
+            Activity activity = NiceUtil.scanForActivity(mContext);
+            NiceUtil.setOrientationPort(activity);
+            NiceUtil.showActionBar(mContext);
 
 
-        ViewGroup contentView = NiceUtil.scanForActivity(mContext).findViewById(android.R.id.content);
-        contentView.removeView(mContainer);
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        addView(mContainer, params);
-        screenMode = MODE_NORMAL;
-        mPlayControl.setScreenMode(screenMode);
+            ViewGroup contentView = (ViewGroup) NiceUtil.scanForActivity(mContext).findViewById(android.R.id.content);
+            contentView.removeView(mContainer);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            addView(mContainer, params);
+            mCurrentMode = MODE_NORMAL;
+            mPlayControl.setScreenMode(mCurrentMode);
+            return true;
+        }
+        return false;
+    }
+
+    public void setVideoUri(String videoUri) {
+        LogUtils.d(TAG, "setVideoUri: " + videoUri);
+        mVideoUri = videoUri;
+        initPlayer();
+    }
+
+    public void setImage(String photoUri) {
+        LogUtils.d(TAG, "setImage: " + photoUri);
+        mPlayControl.setImage(photoUri);
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return mPlayControl.onTouchEvent(event);
     }
 
     public void release() {
+        releasePlayer();
+        if (mSurfaceTexture != null) {
+            mSurfaceTexture.release();
+            mSurfaceTexture = null;
+        }
+        mCurrentMode = MODE_NORMAL;
+        mPlayControl.cancel();
+    }
+
+    private void releasePlayer() {
         if (mMediaPlayer != null) {
             mMediaPlayer.reset();
             mMediaPlayer.release();
             mMediaPlayer = null;
         }
+        mIsStarted = false;
     }
-
-    public void setVideoUri(String videoUri) {
-        Log.d(TAG, "setVideoUri: " + videoUri);
-        this.videoUri = videoUri;
-        initPlayer();
-    }
-
-    public void setImage(String photoUri) {
-        this.imageUri = photoUri;
-        mPlayControl.setImage(photoUri);
-    }
-
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return mPlayControl.onTouchEvent(event);
-        // Log.d(TAG, "onTouchEvent: ");
-        // return super.onTouchEvent(event);
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        destroy();
-    }
-
-    public void destroy() {
-        release();
-    }
-
 
     @Override
     public int getDuration() {
@@ -336,10 +377,7 @@ public class VideoPlayView extends RelativeLayout implements VideoContract.Video
 
     @Override
     public boolean isPlaying() {
-        if (null != mMediaPlayer) {
-            return mMediaPlayer.isPlaying();
-        }
-        return false;
+        return null != mMediaPlayer && mMediaPlayer.isPlaying();
     }
 
     @Override
@@ -355,5 +393,63 @@ public class VideoPlayView extends RelativeLayout implements VideoContract.Video
     @Override
     public boolean isNetVideo() {
         return mIsNetVideo;
+    }
+
+    @Override
+    public boolean backPressed() {
+        if (mCurrentMode == MODE_FULL_SCREEN) {
+            exitFullScreen();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void resume() {
+        LogUtils.d(TAG, "resume mPlaying    " + mPlaying + "    mNeedStart  " + mNeedStart);
+        mActive = true;
+        if (null != mMediaPlayer) {
+            if (mPlaying && !mMediaPlayer.isPlaying()) {
+                mMediaPlayer.start();
+                mPlayControl.showProgress();
+            }
+        }
+        if (mNeedStart) {
+            prepareFinishVideoStart();
+        }
+    }
+
+    @Override
+    public void suspend() {
+        mActive = false;
+        saveData();
+        pause();
+        mPlayControl.cancel();
+        LogUtils.d(TAG, "suspend: mPlaying " + mPlaying);
+    }
+
+    @Override
+    public void phoneRing() {
+        mActive = false;
+        pause();
+        mPlayControl.cancel();
+        mIsPlayPhoneRing = isPlaying();
+        LogUtils.d(TAG, "phoneRing: mIsPlayPhoneRing " + mIsPlayPhoneRing);
+    }
+
+
+    @Override
+    public void phoneIdle() {
+        LogUtils.d(TAG, "phoneIdle: mIsPlayPhoneRing " + mIsPlayPhoneRing + "   mNeedStart " + mNeedStart);
+        mActive = true;
+        if (null != mMediaPlayer) {
+            if (mIsPlayPhoneRing && !mMediaPlayer.isPlaying()) {
+                mMediaPlayer.start();
+                mPlayControl.showProgress();
+            }
+        }
+        if (mNeedStart) {
+            prepareFinishVideoStart();
+        }
     }
 }

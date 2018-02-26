@@ -10,20 +10,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.wenjie.mediaplayerdm.R;
-import com.example.wenjie.mediaplayerdm.base.Utils;
+import com.example.wenjie.mediaplayerdm.util.LogUtils;
 
 import java.lang.ref.WeakReference;
 
 
 public class VideoPlayControlView extends VideoPlayAbsControl implements View.OnClickListener {
-    private static final String TAG = "VideoPlayControlView";
+    private static final String TAG = "VideoPlayControl";
 
     protected static final int MSG_SHOW_PROGRESS = 121;
-    protected static final int MSG_DISMISS_CONTROL = 122;
+    protected static final int MSG_DISMISS_SELF = 122;
     protected static final int TIME_INTERVAL = 1000;
 
     protected TextView mCurrentTimeView;
@@ -33,6 +32,7 @@ public class VideoPlayControlView extends VideoPlayAbsControl implements View.On
     protected ImageView mChangeScreenView;
     protected ImageView mImageView;
     protected ImageView mCenterPlayView;
+    protected ImageView mBackView;
     protected LinearLayout mBottomLayout;
 
     protected Handler mHandler;
@@ -53,32 +53,41 @@ public class VideoPlayControlView extends VideoPlayAbsControl implements View.On
         init();
     }
 
-
     protected void init() {
         View.inflate(getContext(), R.layout.video_play_control_layout, this);
         mContainer = this;
         mContainer.setOnClickListener(this);
-        mImageView = findViewById(R.id.video_img);
-        mCurrentTimeView = findViewById(R.id.progress_view);
-        mEndTimeView = findViewById(R.id.end_time_view);
-        mBottomPlayView = findViewById(R.id.bottom_play_btn);
+        mBackView = (ImageView) findViewById(R.id.back_icon);
+        mBackView.setOnClickListener(this);
+        mImageView = (ImageView) findViewById(R.id.video_img);
+        mImageView.setImageResource(R.drawable.video_bg_loading);
+        mCurrentTimeView = (TextView) findViewById(R.id.progress_view);
+        mEndTimeView = (TextView) findViewById(R.id.end_time_view);
+        mBottomPlayView = (ImageView) findViewById(R.id.bottom_play_btn);
         mBottomPlayView.setOnClickListener(this);
-        mChangeScreenView = findViewById(R.id.full_screen_img);
+        mChangeScreenView = (ImageView) findViewById(R.id.full_screen_img);
+        mChangeScreenView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.video_icon_enlarge));
         mChangeScreenView.setOnClickListener(this);
-        mSeekBar = findViewById(R.id.seek_bar);
+        mSeekBar = (SeekBar) findViewById(R.id.seek_bar);
         mSeekBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
-        mCenterPlayView = findViewById(R.id.center_play_view);
-        mCenterPlayView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_player_center_start));
+        mCenterPlayView = (ImageView) findViewById(R.id.center_play_view);
+        mCenterPlayView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.video_icon_play));
         mCenterPlayView.setOnClickListener(this);
-        mBottomLayout = findViewById(R.id.bottom_bar);
+        mBottomLayout = (LinearLayout) findViewById(R.id.bottom_bar);
         mBottomLayout.setVisibility(View.INVISIBLE);
         mHandler = new UpdateHandler(this);
+        initRes();
+    }
+
+    protected void initRes() {
+        mLoadingDrawable = getResources().getDrawable(R.drawable.toast_loading);
+        mReplayDrawable = getResources().getDrawable(R.drawable.video_icon_replay);
     }
 
     public static class UpdateHandler extends Handler {
         private WeakReference<VideoPlayControlView> viewReference;
 
-        public UpdateHandler(VideoPlayControlView videoPlayView) {
+        UpdateHandler(VideoPlayControlView videoPlayView) {
             viewReference = new WeakReference<>(videoPlayView);
         }
 
@@ -86,17 +95,18 @@ public class VideoPlayControlView extends VideoPlayAbsControl implements View.On
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_SHOW_PROGRESS:
-                    Log.d(TAG, "handleMessage: viewReference" + viewReference);
-                    Log.d(TAG, "handleMessage: viewReference VideoPlayControlView " + viewReference.get());
+                    LogUtils.d(TAG, "handleMessage: viewReference" + viewReference);
+                    LogUtils.d(TAG, "handleMessage: viewReference VideoPlayControlView " + viewReference.get());
                     if (null != viewReference.get()) {
                         viewReference.get().showCurrentProgress();
                     }
                     break;
-                case MSG_DISMISS_CONTROL:
+                case MSG_DISMISS_SELF:
                     if (null != viewReference.get()) {
                         viewReference.get().dismiss();
                     }
                     break;
+                default:
             }
         }
     }
@@ -104,34 +114,56 @@ public class VideoPlayControlView extends VideoPlayAbsControl implements View.On
     SeekBar.OnSeekBarChangeListener mSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            // called with: seekBar = [android.widget.SeekBar{33ff4aa6 VFED.... ...P..ID 145,0-685,96 #7f0800c8 app:id/seek_bar}], progress = [78], fromUser = [true]
-            Log.d(TAG, "onProgressChanged() called with: seekBar = [" + seekBar + "], progress = [" + progress + "], fromUser = [" + fromUser + "]");
             setProgress(progress);
         }
 
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
             stopShowProgress();
+            mHandler.removeMessages(MSG_DISMISS_SELF);
         }
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             int progress = seekBar.getProgress();
             mVideoPlayer.seekTo(progress);
+            dismissSelfDelay();
         }
     };
 
-    private void stopShowProgress() {
+    protected void dismissSelfDelay() {
+        mHandler.sendEmptyMessageDelayed(MSG_DISMISS_SELF, 2000);
+    }
+
+    protected void stopShowProgress() {
         mHandler.removeMessages(MSG_SHOW_PROGRESS);
     }
 
+    @Override
     public void setScreenMode(int screenMode) {
         mScreenMode = screenMode;
+        if (VideoPlayView.MODE_NORMAL == screenMode) {
+            setOnNormalScreen();
+        } else if (VideoPlayView.MODE_FULL_SCREEN == screenMode) {
+            setOnFullScreen();
+        }
     }
 
+    protected void setOnFullScreen() {
+        mChangeScreenView.setVisibility(View.GONE);
+        mBackView.setVisibility(View.VISIBLE);
+        mBottomLayout.setPadding(0, NiceUtil.dp2px(getContext(), 5), 0, NiceUtil.dp2px(getContext(), 15));
+    }
+
+    protected void setOnNormalScreen() {
+        mChangeScreenView.setVisibility(View.VISIBLE);
+        mBackView.setVisibility(View.INVISIBLE);
+        mBottomLayout.setPadding(0, NiceUtil.dp2px(getContext(), 5), 0, NiceUtil.dp2px(getContext(), 5));
+    }
 
     @Override
     public void onClick(View v) {
+        LogUtils.d(TAG, "onClick: ");
         switch (v.getId()) {
             case R.id.center_play_view:
                 centerPlayClick();
@@ -140,14 +172,19 @@ public class VideoPlayControlView extends VideoPlayAbsControl implements View.On
                 bottomPlayClick();
                 break;
             case R.id.full_screen_img:
-                changeWindowsSize();
+                changeScreenMode();
+                break;
+            case R.id.back_icon:
+                if (VideoPlayView.MODE_FULL_SCREEN == mScreenMode) {
+                    mVideoPlayer.exitFullScreen();
+                }
                 break;
             default:
                 showOrDismiss();
         }
     }
 
-    private void bottomPlayClick() {
+    protected void bottomPlayClick() {
         if (mVideoPlayer.isPlaying()) {
             setPause();
         } else {
@@ -155,28 +192,34 @@ public class VideoPlayControlView extends VideoPlayAbsControl implements View.On
         }
     }
 
-
-    private void centerPlayClick() {
-        if (mVideoPlayer.isNetVideo()) {
-            if (!Utils.isNetworkAvailable(mContext)) {
-                showNoNetwork();
-                return;
+    protected void centerPlayClick() {
+        if (!mVideoPlayer.isStarted()) {
+            if (mVideoPlayer.isNetVideo()) {
+                if (!NiceUtil.isNetworkAvailable(mContext)) {
+                    showNoNetwork();
+                    return;
+                }
+                if (NiceUtil.isOnlyMobileNetworkConnect(mContext)) {
+                    mCenterPlayView.setVisibility(View.INVISIBLE);
+                    showOnMobileNetwork();
+                    return;
+                }
             }
-            if (Utils.isOnlyMobileNetworkConnect(mContext)) {
-                mCenterPlayView.setVisibility(View.INVISIBLE);
-                showOnMobileNetwork();
-                return;
+            startPlay();
+        } else {
+            if (mVideoPlayer.isPlaying()) {
+                setPause();
+            } else {
+                setPlay();
             }
         }
-        startPlay();
-
     }
 
     @Override
     public void startPlay() {
+        showLoading();
         mVideoPlayer.startPlay();
         mCenterPlayView.setVisibility(View.INVISIBLE);
-        showLoading();
     }
 
 
@@ -185,55 +228,66 @@ public class VideoPlayControlView extends VideoPlayAbsControl implements View.On
         Log.d(TAG, "onPlayerStart: ");
         dismissLoading();
         mImageView.setVisibility(View.GONE);
-        //mContainer.setVisibility(View.INVISIBLE);
         mDuration = mVideoPlayer.getDuration();
         mEndTimeView.setText(NiceUtil.formatDuration(mDuration));
         mSeekBar.setMax(mDuration);
         mSeekBar.setProgress(0);
         mCenterPlayView.setVisibility(View.GONE);
-        mBottomPlayView.setImageDrawable(getResources().getDrawable(R.drawable.ic_player_pause));
+        mCenterPlayView.setImageDrawable(getResources().getDrawable(R.drawable.video_icon_pause));
+        mBottomPlayView.setImageDrawable(getResources().getDrawable(R.drawable.video_icon_pause));
         showCurrentProgress();
     }
 
-
     private void showCurrentProgress() {
-        Log.d(TAG, "showCurrentProgress: mVideoPlayer " + mVideoPlayer);
+        LogUtils.d(TAG, "showCurrentProgress: ");
         int progress = mVideoPlayer.getCurrentPosition();
         mCurrentTimeView.setText(NiceUtil.formatDuration(progress));
         mHandler.sendEmptyMessageDelayed(MSG_SHOW_PROGRESS, TIME_INTERVAL);
         mSeekBar.setProgress(progress);
     }
 
-
     @Override
     public void setVideoPlayer(VideoContract.VideoPlayer player) {
         mVideoPlayer = player;
     }
 
-
     @Override
     public void show() {
         Log.d(TAG, "show: ");
-        mContainer.setVisibility(View.VISIBLE);
+        mCenterPlayView.setVisibility(VISIBLE);
         mBottomLayout.setVisibility(View.VISIBLE);
-        mHandler.removeMessages(MSG_DISMISS_CONTROL);
-        mHandler.sendEmptyMessageDelayed(MSG_DISMISS_CONTROL, 3000);
+        mContainer.setVisibility(View.VISIBLE);
+        mHandler.removeMessages(MSG_DISMISS_SELF);
+        dismissSelfDelay();
     }
 
     @Override
     public void dismiss() {
-        Log.d(TAG, "dismiss: ");
+        LogUtils.d(TAG, "dismiss: ");
+        mCenterPlayView.setVisibility(View.INVISIBLE);
         mBottomLayout.setVisibility(View.INVISIBLE);
         mContainer.setVisibility(View.INVISIBLE);
-        // mHandler.removeMessages(MSG_DISMISS_CONTROL);
     }
 
 
     @Override
-    public void setImage(String uri) {
-        Log.d(TAG, "setImage: " + uri);
-        mImageUri = uri;
+    public void setImage(String url) {
+        LogUtils.d(TAG, "setImage: " + url);
+        mImageUri = url;
         loadImage();
+    }
+
+    @Override
+    public void onPlayCompletion() {
+        if (!errorLayoutShow) {
+            mContainer.setVisibility(View.VISIBLE);
+            mImageView.setVisibility(View.VISIBLE);
+            mCenterPlayView.setVisibility(View.VISIBLE);
+        }
+        mBottomLayout.setVisibility(View.INVISIBLE);
+        mBackView.setVisibility(View.INVISIBLE);
+        mCenterPlayView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.video_icon_replay));
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -241,17 +295,43 @@ public class VideoPlayControlView extends VideoPlayAbsControl implements View.On
         showCurrentProgress();
     }
 
-    private void showOrDismiss() {
+
+    @Override
+    public void dismissLoading() {
+        super.dismissLoading();
+    }
+
+    @Override
+    protected void retryOnError() {
+        dismissError();
         if (!mVideoPlayer.isStarted()) {
+            startPlay();
+        }
+    }
+
+    @Override
+    public void onPlayError() {
+        mCenterPlayView.setVisibility(View.INVISIBLE);
+        mBottomLayout.setVisibility(View.INVISIBLE);
+        mHandler.removeCallbacksAndMessages(null);
+        dismissLoading();
+        showOnError();
+    }
+
+    @Override
+    public void cancel() {
+        mHandler.removeCallbacksAndMessages(null);
+    }
+
+    protected void showOrDismiss() {
+        if (!mVideoPlayer.isPlaying()) {
             return;
         }
-        Log.d(TAG, "showOrDismiss: VISIBLE " + (mBottomLayout.getVisibility() == View.VISIBLE));
         if (mBottomLayout.getVisibility() == View.VISIBLE) {
             dismiss();
         } else {
             show();
         }
-
     }
 
     public void setProgress(int progress) {
@@ -259,7 +339,7 @@ public class VideoPlayControlView extends VideoPlayAbsControl implements View.On
     }
 
 
-    private void changeWindowsSize() {
+    protected void changeScreenMode() {
         if (VideoPlayView.MODE_NORMAL == mScreenMode) {
             mVideoPlayer.fullScreen();
         } else if (VideoPlayView.MODE_FULL_SCREEN == mScreenMode) {
@@ -267,35 +347,27 @@ public class VideoPlayControlView extends VideoPlayAbsControl implements View.On
         }
     }
 
-    private void setPause() {
-        Toast.makeText(getContext(), "暂停", Toast.LENGTH_SHORT).show();
+    protected void setPause() {
         mVideoPlayer.pause();
-        mBottomPlayView.setImageDrawable(getResources().getDrawable(R.drawable.ic_player_start));
+        mCenterPlayView.setImageDrawable(getResources().getDrawable(R.drawable.video_icon_play));
+        mBottomPlayView.setImageDrawable(getResources().getDrawable(R.drawable.video_icon_play));
         stopShowProgress();
-        mHandler.removeMessages(MSG_DISMISS_CONTROL);
+        mHandler.removeMessages(MSG_DISMISS_SELF);
     }
 
-    private void setPlay() {
-        Toast.makeText(getContext(), "播放", Toast.LENGTH_SHORT).show();
-        setPlay(true);
+    protected void setPlay() {
+        mVideoPlayer.play();
         showCurrentProgress();
-        mBottomPlayView.setImageDrawable(getResources().getDrawable(R.drawable.ic_player_pause));
+        mCenterPlayView.setImageDrawable(getResources().getDrawable(R.drawable.video_icon_pause));
+        mBottomPlayView.setImageDrawable(getResources().getDrawable(R.drawable.video_icon_pause));
     }
 
-    public void setPlay(boolean callBack) {
-        if (callBack) {
-            mVideoPlayer.play();
-        }
+    protected void loadImage() {
+        Glide.with(getContext())
+                .load(mImageUri)
+                .centerCrop()
+                .placeholder(R.drawable.video_bg_loading)
+                .into(mImageView);
     }
 
-    private void loadImage() {
-        Glide.with(getContext()).load(mImageUri).into(mImageView);
-    }
-
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        mHandler.removeCallbacksAndMessages(null);
-    }
 }

@@ -65,9 +65,9 @@ public class RecommendVideoActivity extends Activity implements RecommendVideoCo
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 VideoCardInfo cardInfo = (VideoCardInfo) adapter.getItem(position);
-                videoPlayView.stopPlay();
-                videoPlayView.setImage(cardInfo.getPhotoUrl());
-                videoPlayView.setVideoUri(cardInfo.getVideoUrl());
+
+               // videoPlayView.setImage(cardInfo.getPhotoUrl());
+              //  videoPlayView.setVideoUri(cardInfo.getVideoUrl());
             }
         });
 

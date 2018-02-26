@@ -41,4 +41,9 @@
     <string name="please_check_net">请检查你的网络连接...</string>
     <string name="empty_null"></string>
 
+
+
+    <string name="no_network_layout">网络好像开小差了~</string>
+    <string name="no_network_reload">重新加载</string>
+
 </resources>

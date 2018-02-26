@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="no_network_layout_width">86dp</dimen>
+    <dimen name="no_network_layout_height">114dp</dimen>
+    <dimen name="no_network_layout_margintop">90dp</dimen>
+    <dimen name="no_network_tv_margintop">17dp</dimen>
+    <dimen name="no_network_tv_textsize">16sp</dimen>
+    <dimen name="no_network_tv_width">96dp</dimen>
+    <dimen name="no_network_tv_height">39dp</dimen>
+
+</resources>
