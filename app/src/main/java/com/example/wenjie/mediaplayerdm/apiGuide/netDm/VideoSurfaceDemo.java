@@ -1,4 +1,4 @@
-package com.example.wenjie.mediaplayerdm.netDm;
+package com.example.wenjie.mediaplayerdm.apiGuide.netDm;
 
 /**
  * Created by wen.jie on 2018/1/11.
@@ -33,7 +33,7 @@ import java.io.IOException;
  * 然后，设置controller.setMediaPlayer(),setAnchorView(),setEnabled(),show()就可以了，这里不再实现
  *
  * @author Administrator
- * http://ju.outofmemory.cn/entry/159514
+ *         http://ju.outofmemory.cn/entry/159514
  */
 public class VideoSurfaceDemo extends Activity implements OnCompletionListener, OnErrorListener, OnInfoListener,
         OnPreparedListener, OnSeekCompleteListener, OnVideoSizeChangedListener, SurfaceHolder.Callback {
@@ -44,6 +44,7 @@ public class VideoSurfaceDemo extends Activity implements OnCompletionListener, 
     private int vWidth, vHeight;
 
     //private boolean readyToPlay = false;
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.video_surface_demo);
@@ -146,6 +147,7 @@ public class VideoSurfaceDemo extends Activity implements OnCompletionListener, 
                 break;
             case MediaPlayer.MEDIA_INFO_NOT_SEEKABLE:
                 break;
+            default:
         }
         return false;
     }

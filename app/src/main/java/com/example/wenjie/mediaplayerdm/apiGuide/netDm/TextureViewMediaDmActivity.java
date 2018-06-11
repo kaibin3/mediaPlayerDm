@@ -1,4 +1,4 @@
-package com.example.wenjie.mediaplayerdm.netDm;
+package com.example.wenjie.mediaplayerdm.apiGuide.netDm;
 
 import android.app.Activity;
 import android.content.res.AssetManager;
@@ -23,7 +23,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Created by wen.jie on 2018/1/12.
+ * @author wen.jie
+ * @date 2018/1/12
  * <p>
  * http://blog.csdn.net/lowprofile_coding/article/details/46806783
  */
@@ -33,8 +34,7 @@ public class TextureViewMediaDmActivity extends Activity {
     private TextureView mTextureView;
     private MediaPlayer mMediaPlayer;
     private Surface mSurface;
-
-    private ImageView videoImage;
+    private ImageView mVideoImage;
     private Button button;
 
     @Override
@@ -42,9 +42,10 @@ public class TextureViewMediaDmActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_texture_view_media_dm);
         mTextureView = findViewById(R.id.textureview);
-        mTextureView.setSurfaceTextureListener(surfaceTextureListener);//设置监听函数  重写4个方法
+        //设置监听函数  重写4个方法
+        mTextureView.setSurfaceTextureListener(surfaceTextureListener);
 
-        videoImage = findViewById(R.id.video_image);
+        mVideoImage = findViewById(R.id.video_image);
         findViewById(R.id.play_btn).setOnClickListener(onClickListener);
     }
 
@@ -79,8 +80,12 @@ public class TextureViewMediaDmActivity extends Activity {
             System.out.println("onSurfaceTextureDestroyed onSurfaceTextureDestroyed");
             surfaceTexture = null;
             mSurface = null;
-            if (null != mMediaPlayer) mMediaPlayer.stop();
-            if (null != mMediaPlayer) mMediaPlayer.release();
+            if (null != mMediaPlayer) {
+                mMediaPlayer.stop();
+            }
+            if (null != mMediaPlayer) {
+                mMediaPlayer.release();
+            }
             return true;
         }
 
@@ -106,13 +111,15 @@ public class TextureViewMediaDmActivity extends Activity {
                 Uri uri = Uri.parse(localVideoUrl2);
 
                 mMediaPlayer.setDataSource(getApplicationContext(), uri);
+                //Surface
                 mMediaPlayer.setSurface(mSurface);
+
                 mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
                         Log.d(TAG, "PlayThread Thread: " + Thread.currentThread().getId() + " " + Thread.currentThread().getName());
-                        videoImage.setVisibility(View.GONE);
+                        mVideoImage.setVisibility(View.GONE);
                         mMediaPlayer.start();
                     }
                 });

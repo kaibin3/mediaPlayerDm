@@ -6,9 +6,9 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- android:configChanges="orientation|screenSize|keyboardHidden" -->
 
     <application
         android:name=".base.MyApp"
@@ -39,19 +39,14 @@
         </activity>
         <activity
             android:name=".onLineViedio.OnLinePlayActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden">
-
-        </activity>
+            android:configChanges="orientation|screenSize|keyboardHidden"></activity>
         <activity
             android:name=".PhiFind.RecommendVideoActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"></activity>
-
-        <activity android:name=".netDm.VideoSurfaceDemo" />
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity android:name=".apiGuide.netDm.VideoSurfaceDemo" />
         <activity android:name=".apiGuide.LiveCameraActivity" />
-        <activity android:name=".netDm.TextureViewMediaDmActivity" />
+        <activity android:name=".apiGuide.netDm.TextureViewMediaDmActivity" />
+        <activity android:name=".apiGuide.TextureViewVideoActivity"></activity>
     </application>
-
-
-    <!--  android:configChanges="orientation|screenSize|keyboardHidden"-->
 
 </manifest>
