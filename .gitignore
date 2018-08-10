@@ -9,9 +9,6 @@
 .externalNativeBuild
 
 
-
-gradle.properties
-gradlew.bat
 .idea/
 gradle/
 /gradlew
