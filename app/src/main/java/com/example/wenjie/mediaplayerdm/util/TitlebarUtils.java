@@ -8,7 +8,8 @@ import android.util.TypedValue;
 import android.view.View;
 
 import com.example.wenjie.mediaplayerdm.R;
-import com.phicomm.widgets.PhiTitleBar;
+import com.example.wenjie.mediaplayerdm.ui.widget.PhiTitleBar;
+
 
 /**
  * Created by long.xiong on 2017/2/28.
