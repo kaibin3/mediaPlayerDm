@@ -7,10 +7,8 @@ import android.widget.Toast;
 
 import com.example.wenjie.mediaplayerdm.base.MyApp;
 
-import com.phicomm.widgets.PhiToast;
-
 public class ToastUtils {
-    private static PhiToast mToast = null;
+    private static Toast mToast = null;
 
     /**
      * 判断toast是否存在，如果存在则更新text，达到避免出现时间叠加的问题
@@ -20,7 +18,7 @@ public class ToastUtils {
      */
     public static void toastShow(Context context, String text, int duration) {
         if (mToast == null) {
-            mToast = PhiToast.makeText(MyApp.getContext(), text, duration);
+            mToast = Toast.makeText(MyApp.getContext(), text, duration);
         } else {
             mToast.setText(text);
         }
@@ -34,7 +32,7 @@ public class ToastUtils {
     public static void toastShow(int resId)
             throws Resources.NotFoundException {
         if (mToast == null) {
-            mToast = PhiToast.makeText(MyApp.getContext(), MyApp.getContext().getResources().getString(resId), Toast.LENGTH_SHORT);
+            mToast = Toast.makeText(MyApp.getContext(), MyApp.getContext().getResources().getString(resId), Toast.LENGTH_SHORT);
         } else {
             mToast.setText(MyApp.getContext().getResources().getText(resId));
         }
@@ -43,7 +41,7 @@ public class ToastUtils {
 
     public static void toastShow(@NonNull String str){
         if (mToast == null) {
-            mToast = PhiToast.makeText(MyApp.getContext(), str, Toast.LENGTH_SHORT);
+            mToast = Toast.makeText(MyApp.getContext(), str, Toast.LENGTH_SHORT);
         } else {
             mToast.setText(str);
         }

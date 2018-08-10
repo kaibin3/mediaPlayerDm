@@ -2,6 +2,7 @@ package com.example.wenjie.mediaplayerdm.util;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ComponentName;
 import android.content.Context;
@@ -20,8 +21,6 @@ import android.widget.Toast;
 
 import com.example.wenjie.mediaplayerdm.BuildConfig;
 import com.example.wenjie.mediaplayerdm.R;
-import com.phicomm.widgets.alertdialog.PhiAlertDialog;
-import com.phicomm.widgets.alertdialog.PhiGuideDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -343,9 +342,9 @@ public class PermissionUtils {
     }
 
     private static void showMessageOKNoCancel(final Activity context, int message, DialogInterface.OnClickListener okListener) {
-        new PhiAlertDialog.Builder(context)
+        new AlertDialog.Builder(context)
                 .setMessage(message)
-                .setPositiveButton(R.string.ok, okListener)
+                .setPositiveButton(android.R.string.ok, okListener)
                 .setCancelable(false)
                 .create()
                 .show();
@@ -547,31 +546,7 @@ public class PermissionUtils {
      * 打开国内手机厂商自定义的权限管理界面
      */
     public static void openCustomSettingActivity(final Activity activity, final PermissionGrant permissionGrant, final int requestCode) {
-        final PhiGuideDialog deleteDialog = new PhiGuideDialog(activity);
-        deleteDialog.setTitle(activity.getResources().getString(R.string.please_grant_app_permission));
-        deleteDialog.setLeftGuideOnclickListener(activity.getResources().getString(R.string.cancel),R.color.syn_text_color, new PhiGuideDialog.onLeftGuideOnclickListener() {
-            @Override
-            public void onLeftGuideClick() {
-                permissionGrant.onPermissionGranted(CODE_PERMISSION_DENIED);
-                deleteDialog.dismiss();
-            }
 
-        });
-        deleteDialog.setRightGuideOnclickListener(activity.getResources().getString(R.string.settings), R.color.phi_orange,new PhiGuideDialog.onRightGuideOnclickListener() {
-            @Override
-            public void onRightGuideClick() {
-                permissionGrant.onPermissionGranted(CODE_PERMISSION_DENIED);
-                gotoMiuiPermission(activity, requestCode);
-                deleteDialog.dismiss();
-            }
-        });
-        deleteDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                permissionGrant.onPermissionGranted(CODE_PERMISSION_DENIED);
-            }
-        });
-        deleteDialog.show();
 
     }
 

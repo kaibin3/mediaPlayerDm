@@ -25,10 +25,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.wenjie.mediaplayerdm.PhiFind.entry.RecommendVideoEntry;
 import com.example.wenjie.mediaplayerdm.PhiFind.videoplay.VideoPlayView;
 import com.example.wenjie.mediaplayerdm.R;
+import com.example.wenjie.mediaplayerdm.ui.widget.PhiTitleBar;
 import com.example.wenjie.mediaplayerdm.util.Constants;
 import com.example.wenjie.mediaplayerdm.util.PermissionUtils;
 import com.example.wenjie.mediaplayerdm.util.TitlebarUtils;
-import com.phicomm.widgets.PhiTitleBar;
+//import com.phicomm.widgets.PhiTitleBar;
 
 public class RecommendVideoActivity extends Activity implements RecommendVideoContract.View {
     private static final String TAG = "FindVideoActivity";
