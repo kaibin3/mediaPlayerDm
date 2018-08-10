@@ -42,7 +42,7 @@ android:orientation="vertical" >
 
 </LinearLayout>-->
 
-<com.phicomm.widgets.PhiTitleBar
+<com.example.wenjie.mediaplayerdm.ui.widget.PhiTitleBar
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/phiTitleBar"
     android:layout_width="match_parent"

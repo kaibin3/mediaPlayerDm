@@ -9,8 +9,9 @@ import android.widget.ListView;
 import com.example.wenjie.mediaplayerdm.PhiFind.entry.FindCardInfo;
 import com.example.wenjie.mediaplayerdm.PhiFind.entry.FindVideoEntry;
 import com.example.wenjie.mediaplayerdm.R;
+import com.example.wenjie.mediaplayerdm.ui.widget.PhiTitleBar;
 import com.example.wenjie.mediaplayerdm.util.TitlebarUtils;
-import com.phicomm.widgets.PhiTitleBar;
+
 
 public class FindVideoActivity extends Activity implements FindVideoContract.View {
     private static final String TAG = "FindVideoActivity";
