@@ -211,7 +211,7 @@ public class LocalMediasActivity extends AppCompatActivity {
 				tv_back.setVisibility(View.VISIBLE);
 				lv_file.setVisibility(View.VISIBLE);
 				break;
-			case R.id.bt_back: // 返回上一级目录
+			case R.id.bt_back:
 				if (currentPath.endsWith("/")) {
 					AlertDialog.Builder alertDialog = new AlertDialog.Builder(LocalMediasActivity.this);
 					alertDialog.setTitle("");

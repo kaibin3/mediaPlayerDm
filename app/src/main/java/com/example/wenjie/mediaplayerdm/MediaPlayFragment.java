@@ -71,6 +71,8 @@ public class MediaPlayFragment extends Fragment {
 
 
     private Handler handler = new Handler() {
+
+        @Override
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case 0x0000:

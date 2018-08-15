@@ -34,7 +34,7 @@ public class ViewWrap {
 
 
 	/**
-	 * ��ȡtv_size
+	 *
 	 * @return
 	 */
 	public TextView getTv_size() {
@@ -46,7 +46,7 @@ public class ViewWrap {
 
 	
 	/**
-	 * ��ȡtv_time
+	 *
 	 * @return
 	 */
 	public TextView getTv_time() {
@@ -58,7 +58,7 @@ public class ViewWrap {
 
 
 	/**
-	 * ��ȡiv_show
+	 *
 	 * @return
 	 */
 	public ImageView getIv_show() {
@@ -70,7 +70,7 @@ public class ViewWrap {
 
 
 	/**
-	 * ��ȡiv_isplay
+	 *
 	 * @return
 	 */
 	public ImageView getIv_isplay() {

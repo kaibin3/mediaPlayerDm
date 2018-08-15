@@ -16,6 +16,7 @@ public class LiveCameraActivity extends Activity implements TextureView.SurfaceT
     private Camera mCamera;
     private TextureView mTextureView;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -25,6 +26,7 @@ public class LiveCameraActivity extends Activity implements TextureView.SurfaceT
         setContentView(mTextureView);
     }
 
+    @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
         mCamera = Camera.open();// <uses-permission android:name="android.permission.CAMERA"/> 权限申请。
 
@@ -36,16 +38,19 @@ public class LiveCameraActivity extends Activity implements TextureView.SurfaceT
         }
     }
 
+    @Override
     public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
         // Ignored, Camera does all the work for us
     }
 
+    @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
         mCamera.stopPreview();
         mCamera.release();
         return true;
     }
 
+    @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
         // Invoked every time there's a new Camera preview frame
     }

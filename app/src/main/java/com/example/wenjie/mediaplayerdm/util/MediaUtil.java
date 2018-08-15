@@ -18,10 +18,12 @@ public class MediaUtil {
         String minStr = "";
         String secStr = "";
 
-
-        hour = mesc / 1000 / 60 / 60;// 得到时
-        minute = mesc / 1000 / 60;// 得到分钟
-        second = mesc / 1000 % 60;// 得到秒
+        // 得到时
+        hour = mesc / 1000 / 60 / 60;
+        // 得到分钟
+        minute = mesc / 1000 / 60;
+        // 得到秒
+        second = mesc / 1000 % 60;
 
         if (minute < 10) {
             minStr = "0" + minute;
